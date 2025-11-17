@@ -313,6 +313,9 @@ def battleAttack(enemyStats, player, battleSet):
         if critA == critB:
           amountRight += player.get("attack")
           print("CRITICAL HIT!\n")
+          background('critical-hit.gif')
+          time.sleep(0.25)
+          revert_gif()
         else:
           amountRight += 1
     else:
@@ -873,6 +876,7 @@ log.setLevel(logging.ERROR)
 
 current_gif = ""
 current_audio = ""
+previous_gif = ""
 
 audio_files = {
     "PeggleJazz": ("PeggleJazz.mp3", True),
@@ -992,8 +996,16 @@ def start_server():
     app.run(host='0.0.0.0', port=5000, use_reloader=False, debug=False)
 
 def background(gif_name):
-    global current_gif
+    global current_gif, previous_gif
+    if current_gif and current_gif != gif_name:
+      previous_gif = current_gif
     current_gif = gif_name
+
+def revert_gif():
+    global current_gif, previous_gif
+    if previous_gif:
+        current_gif, previous_gif = previous_gif, current_gif
+    return current_gif
 
 def playAudio(track_name):
     global current_audio
@@ -1777,6 +1789,12 @@ def endcredits():
   time.sleep(1.5)
   print("Special thanks to Peggle Deluxe for being an epic game, butter, and with the number 3\n")
   time.sleep(5)
+  os.system('clear')
+  print("Ill take a potato chip...\n")
+  time.sleep(1.5)
+  print("AND EAT IT!\n")
+  background('potatochip.gif')
+  time.sleep(3)
   quit()
 
 main()
