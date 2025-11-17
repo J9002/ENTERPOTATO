@@ -421,7 +421,7 @@ def battleLose():
 
 #################################################################################
 
-"""ADDITIONAL SCRIPTS (SAVE SYS, CASINO, KAT TUT COMEDY AND TRIVIA)"""
+"""ADDITIONAL SCRIPTS"""
 
 def save(savePoint):
   playAudio("Save")
@@ -450,7 +450,8 @@ def letsGoGambling():
   completedGetRichQuick = False
   luigiTEXT = ["You look like a Claude Lobster fan\n", "I, Am Luigi\n", "Have you tried winning?\n", "Theres no shame in losing to me.\n", "You seem like you would lose to Magikarp while having a Tera-Electric Miraidon\n", "You are not the best potato, I am\n", "Even Dr. Mario can't save your wallet now!\n", "You should just get gooderer\n", "Honor dies in the gambling hall.\n", "Your wallet will feel the pain of the tuffles\n", "Imagine losing to a retired 50 year old plumber.\n", "Tiger Drop won't negate the damage done to your credit score.\n", "This casino is very grateful to our generous sponsors: the number three and butter\n", "Potato.. I will cut you down, break you apart, splay the gore of your profane form across the STARS! I will chop you down until the very SHREDS CRY FOR MERCY! My hands shall RELISH ENDING YOU... HERE! AND! NOW!\n", "BEHOLD! THE POWER OF A GAMBLING ADDICT!\n", "I'll let you in on an little something, The Gambling game, it's not like boxing. The guy who gets beat down isn't the loser. It's the guy who can't tough it out until the end, He's the one who loses.\n", "NEVER RETREAT NEVER SURRENDER!!\n", "You are so weak I bet you think that the 1000-THR 'Earthmover' was a hard bossfight\n"]
   print("You have ${} money\n".format(player.get("money")))
-  time.sleep(1)
+  background('luigi-main.gif')
+  time.sleep(3)
   while completed != 3:
     print('"Which game do you want to play?" - Luigi\n')
     whichOne = pyip.inputMenu(['Roulette', "WAR", "Get rich quick!", "Exit."], numbered = True)
@@ -459,47 +460,77 @@ def letsGoGambling():
       result = roulette()
       if result:
         if not completed5050:
+          background('luigi-win.gif')
           completed += 1
           completed5050 = True
+          time.sleep(5)
+          revert_gif()
         else:
+          background('luigi-win.gif')
           print("You've already played this game, you get no completion points for this\n")
-          time.sleep(1)
+          time.sleep(5)
+          revert_gif()
       elif not result:
-        if completed5050:
-          print("You've already played this game, you get no completion points for this\n")
-          time.sleep(1)
+        background('luigi-lose.gif')
+        print("You lost, you get no completion points for this\n")
+        time.sleep(5)
+        revert_gif()
+        background('gigachad-luigi.gif')
         print("{} - Luigi\n".format(luigiMeanText))
+        time.sleep(5)
+        revert_gif() 
     elif whichOne == "WAR":
       result = sillyGame()
       if result:
         if not completedWAR:
+          background('luigi-win.gif')
           completed += 1
           completedWAR = True
+          time.sleep(5)
+          revert_gif()
         else:
+          background('luigi-win.gif')
           print("You've already played this game, you get no completion points for this\n")
-          time.sleep(1)
+          time.sleep(5)
+          revert_gif()
       elif not result:
-        if completedWAR:
-          print("You've already played this game, you get no completion points for this\n")
-          time.sleep(1)
+        background('luigi-lose.gif')
+        print("You lost, you get no completion points for this\n")
+        time.sleep(5)
+        revert_gif()
+        background('gigachad-luigi.gif')
         print("{} - Luigi\n".format(luigiMeanText))
+        time.sleep(5)
+        revert_gif() 
     elif whichOne == "Get rich quick!":
       result = getRichQuick()
       if result:
         if not completedGetRichQuick:
+          background('luigi-win.gif')
           completed += 1
           completedGetRichQuick = True
+          time.sleep(5)
+          revert_gif()
         else:
+          background('luigi-win.gif')
           print("You've already played this game, you get no completion points for this\n")
-          time.sleep(1)
+          time.sleep(5)
+          revert_gif()
       elif not result:
-        if completedGetRichQuick:
-          print("You've already played this game, you get no completion points for this\n")
-          time.sleep(1)
+        background('luigi-lose.gif')
+        print("You lost, you get no completion points for this\n")
+        time.sleep(5)
+        revert_gif()
+        background('gigachad-luigi.gif')
         print("{} - Luigi\n".format(luigiMeanText))
+        time.sleep(5)
+        revert_gif() 
     elif whichOne == "Exit.":
+      background('gigachad-luigi.gif')
       print("You have ${} money\n".format(player.get("money")))
       print("THERE IS NO ESCAPE FROM THE CASINO!\n")
+      time.sleep(5)
+      revert_gif()
 
 def roulette():
   win = False
@@ -1468,7 +1499,8 @@ def savePointThree():
   print("As you enter, you follow a carpet on the floor that leads you to what appears to be the main desk of the establishment\n")
   time.sleep(1.5)
   print("You see a man sitting behind the desk, he looks like he is in his 50s, and he has a large mustache\n")
-  time.sleep(1)
+  background('luigi-explain.gif')
+  time.sleep(0.75)
   print('"I am Luigi, welcome to my casino" - Luigi\n')
   time.sleep(0.5)
   print('"You seem like a potato with a lot of money" - Luigi\n')
