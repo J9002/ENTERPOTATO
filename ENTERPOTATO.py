@@ -1,9 +1,8 @@
-##Ver: Beta 1.2
+ver = "Beta 1.2"
 import random
 import time
 import pyinputplus as pyip
 import os
-import pygame ##literally just used for audio lol
 from flask import Flask, send_from_directory
 import webbrowser
 import threading
@@ -11,7 +10,7 @@ import logging
 
 def enterPotatoSetup():
   """INTRO SEQUENCE"""
-  playBGMAudio("PeggleSynth")
+  playAudio("PeggleSynth")
   print("Welcome to ENTER POTATO,\n")
   time.sleep(0.5)
   print("A game with bad gameplay and even worse writing\n")
@@ -422,7 +421,7 @@ def battleLose():
 """ADDITIONAL SCRIPTS (SAVE SYS, CASINO, KAT TUT COMEDY AND TRIVIA)"""
 
 def save(savePoint):
-  playSFXAudio("Save")
+  playAudio("Save")
   saveLoad()
   savePoint += 1
   with open("GameSaveFile.txt", "r") as gameSaveStats:
@@ -439,7 +438,7 @@ def save(savePoint):
     gameSaveStats.writelines(saveFileLines)
     gameSaveStats.close()
   print("Game Saved!\n")
-  stopAudio() #Just a backup incase I screwed up
+  stopAudio()
 
 def letsGoGambling():
   completed = 0
@@ -867,56 +866,22 @@ def lostWoods():
 
 ##################################################################################
 
-"""AUDIO SETUP"""
-os.environ['SDL_AUDIODRIVER'] = "dummy" #Comment out on actual release 
-pygame.mixer.init()
-
-bgm_audio_files = {
-    "PeggleJazz": os.path.join(os.path.dirname(__file__), "Mus", "PeggleJazz.mp3"),
-    "PeggleMarch": os.path.join(os.path.dirname(__file__), "Mus", "PeggleMarch.mp3"),
-    "PeggleSynth": os.path.join(os.path.dirname(__file__), "Mus", "PeggleSynth.mp3")
-}
-sfx_audio_files = {
-    "Save": os.path.join(os.path.dirname(__file__), "Mus", "CharmlessMan.mp3")
-}
-
-def playBGMAudio(track_name):
-    audio_file = bgm_audio_files[track_name]
-    pygame.mixer.music.load(audio_file)
-    pygame.mixer.music.play(-1)
-    
-def playSFXAudio(track_name):
-    audio_file = sfx_audio_files[track_name]
-    pygame.mixer.music.load(audio_file)
-    pygame.mixer.music.play()
-
-def stopAudio():
-    pygame.mixer.music.stop()
-
-##################################################################################
-
-"""Loading screen while saving"""
-def saveLoad():
-    loading = ["Saving ", "Saving . ", "Saving . . ", "Saving . . . "]
-    def savingLoading():
-        for x in range(4):
-            print(loading[x])
-            time.sleep(1)
-            os.system('clear')
-    os.system('clear')
-    savingLoading()
-    y = 0
-    while y != 212:
-        savingLoading()
-        y += 4
-
-##################################################################################
-
-"""BG GIFS"""
+"""Audio & Graphics Setup"""
 app = Flask(__name__)
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
+
+current_gif = ""
+current_audio = ""
+
+audio_files = {
+    "PeggleJazz": "PeggleJazz.mp3",
+    "PeggleMarch": "PeggleMarch.mp3",
+    "PeggleSynth": "PeggleSynth.mp3",
+    "Lapis": "LapisPhilosophorum.mp3",
+    "Save": "CharmlessMan.mp3"
+}
 
 @app.route('/')
 def index():
@@ -941,25 +906,68 @@ def index():
                 max-height: 100%;
                 object-fit: contain;
             }
+            #audioPlayer {
+                display: none;
+            }
         </style>
         <script>
             let currentGif = '';
-            function checkForUpdate() {
+            let currentAudio = '';
+            
+            function updateGif() {
+                if (currentGif) {
+                    document.getElementById('gif').src = '/bg/' + currentGif;
+                }
+            }
+            
+            function updateAudio() {
+                const audioPlayer = document.getElementById('audioPlayer');
+                if (currentAudio) {
+                    audioPlayer.src = '/audio/' + currentAudio;
+                    audioPlayer.loop = true;
+                    audioPlayer.play().catch(e => console.log('Audio play failed:', e));
+                } else {
+                    audioPlayer.pause();
+                    audioPlayer.src = '';
+                }
+            }
+            
+            function checkForUpdates() {
                 fetch('/current_gif')
                     .then(response => response.text())
                     .then(gifName => {
-                        if (gifName && gifName !== currentGif) {
+                        if (gifName !== currentGif) {
                             currentGif = gifName;
-                            document.getElementById('gif').src = '/bg/' + gifName;
+                            updateGif();
                         }
-                    });
+                    })
+                    .catch(e => console.log('GIF fetch error:', e));
+                    
+                fetch('/current_audio')
+                    .then(response => response.text())
+                    .then(audioName => {
+                        if (audioName !== currentAudio) {
+                            currentAudio = audioName;
+                            updateAudio();
+                        }
+                    })
+                    .catch(e => console.log('Audio fetch error:', e));
             }
-            checkForUpdate();
-            setInterval(checkForUpdate, 1000);
+            checkForUpdates();
+            let intervalCount = 0;
+            const fastInterval = setInterval(() => {
+                checkForUpdates();
+                intervalCount++;
+                if (intervalCount > 5) {
+                    clearInterval(fastInterval);
+                    setInterval(checkForUpdates, 2000);
+                }
+            }, 300);
         </script>
     </head>
     <body>
-        <img id="gif" src="">
+        <img id="gif" src="" style="display: none;" onload="this.style.display='block';">
+        <audio id="audioPlayer"></audio>
     </body>
     </html>
     '''
@@ -968,23 +976,56 @@ def index():
 def get_current_gif():
     return current_gif
 
-@app.route('/bg/<filename>')
+@app.route('/current_audio')
+def get_current_audio():
+    return current_audio
+
+@app.route('/bg/<path:filename>')
 def serve_gif(filename):
     return send_from_directory('BG', filename)
 
+@app.route('/audio/<path:filename>')
+def serve_audio(filename):
+    return send_from_directory('Mus', filename)
+
 def start_server():
-    app.run(port = 5000, use_reloader=False)
+    app.run(host='0.0.0.0', port=5000, use_reloader=False, debug=False)
 
 def background(gif_name):
     global current_gif
     current_gif = gif_name
-    if not hasattr(background, 'server_started'):
-        background.server_started = True
-        server_thread = threading.Thread(target = start_server)
-        server_thread.daemon = True
-        server_thread.start()
-        time.sleep(1.5)
-        webbrowser.open('http://localhost:5000')
+
+def playAudio(track_name):
+    global current_audio
+    current_audio = audio_files[track_name]
+
+def stopAudio():
+    global current_audio
+    current_audio = ""
+
+server_thread = threading.Thread(target=start_server)
+server_thread.daemon = True
+server_thread.start()
+
+time.sleep(2)
+webbrowser.open('http://localhost:5000')
+
+##################################################################################
+
+"""Loading screen while saving"""
+def saveLoad():
+    loading = ["Saving ", "Saving . ", "Saving . . ", "Saving . . . "]
+    def savingLoading():
+        for x in range(4):
+            print(loading[x])
+            time.sleep(1)
+            os.system('clear')
+    os.system('clear')
+    savingLoading()
+    y = 0
+    while y != 212:
+        savingLoading()
+        y += 4
 
 ##################################################################################
 
@@ -1711,7 +1752,7 @@ def savePointSix():
   savePointSeven()
 
 def savePointSeven():
-  print("You have now reached the end of ENTER POTATO ver: Beta 1.2\n")
+  print("You have now reached the end of ENTER POTATO ver: {}\n".format(ver))
   time.sleep(1.5)
   print("The full version will be released in like 300-500 business days\n")
   time.sleep(1.5)

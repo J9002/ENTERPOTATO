@@ -131,13 +131,6 @@ def start_server():
 def background(gif_name):
     global current_gif
     current_gif = gif_name
-    if not hasattr(background, 'server_started'):
-        background.server_started = True
-        server_thread = threading.Thread(target=start_server)
-        server_thread.daemon = False  # Changed to non-daemon
-        server_thread.start()
-        time.sleep(3)
-        webbrowser.open('http://localhost:5000')
 
 def playAudio(track_name):
     global current_audio
@@ -147,11 +140,20 @@ def stopAudio():
     global current_audio
     current_audio = ""
 
-# Start the server and set initial content
+server_thread = threading.Thread(target=start_server)
+server_thread.daemon = True
+server_thread.start()
+
+time.sleep(2)
+webbrowser.open('http://localhost:5000')
 background('yakuza-goro.gif')
-time.sleep(1)
 playAudio('Lapis')
 
-time.sleep(3)
-background('pearto-bounce.gif')
-playAudio('PeggleJazz')
+def main():
+    x = int(input("?"))
+    if x == 2:
+        time.sleep(3)
+        background('v1-ballin.gif')
+        playAudio('PeggleJazz')
+
+main()
