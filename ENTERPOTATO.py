@@ -1,4 +1,4 @@
-ver = "Beta 1.3"
+ver = "Beta 1.5 - currently in development"
 import random
 import time
 import pyinputplus as pyip
@@ -547,11 +547,8 @@ def sillyGame():
       print("If it is a tie, you both lose your cards\n")
       print("Good luck!\n")
       time.sleep(1)
-      for x in range(26):
-        enemyHand.append(random.choice(deck))
-        deck.remove(enemyHand[x])
-        youHand.append(random.choice(deck))
-        deck.remove(youHand[x])
+      enemyHand = deck[:26]
+      youHand = deck[26:52]
       print(youHand)
       print(enemyHand)
       while len(youHand) != 0 and len(enemyHand) != 0:
@@ -570,6 +567,7 @@ def sillyGame():
             youHand.remove(yourPlay)
             deck.append(yourPlay)
             youHand.append(enemyPlay)
+            enemyHand.remove(enemyPlay)
             print("You lost a {0}\n".format(yourPlay))
             print("You won a {0}\n".format(enemyPlay))
           else:
@@ -582,6 +580,7 @@ def sillyGame():
             enemyHand.remove(enemyPlay)
             deck.append(enemyPlay)
             enemyHand.append(yourPlay)
+            youHand.remove(yourPlay)
             print("The enemy lost a {0}\n".format(enemyPlay))
             print("You lost a {0}\n".format(yourPlay))
           else:
@@ -653,7 +652,7 @@ def getRichQuick():
 
   """Kat Tut Comedy And Trivia"""
 def katTutEvent():
-  katTutComedyNew = ["You're telling me a shrimp fried this rice?", "Road work ahead, uh yeah, I sure hope it does", "Bird flu, yeah, they tend to do that", "Apartment complex? I find it quite simple really", "If wood fired Pizza? How is Pizza supposed to get a job now?", "What's up stairs? They can't talk", "Chef's kiss? Do they really?", "You're telling me a gar licked this bread?", "Blood drive? It has a license?", "Your all right? I thought you're all LEFT", "Did you know that a frog can jump higher that the Eiffel tower? This is because Eiffel tower cannot jump.", "Re:Fridgerator? I heard about the vending machine isekai but this is getting ridiculous", "Shoes smell? They don't have noses", "Why can't dinosaurs clap their hands? Because they are extinct"]
+  katTutComedyNew = ["You're telling me a shrimp fried this rice?", "Road work ahead, uh yeah, I sure hope it does", "Bird flu, yeah, they tend to do that", "Apartment complex? I find it quite simple really", "If wood fired Pizza? How is Pizza supposed to get a job now?", "What's up stairs? They can't talk", "Chef's kiss? Do they really?", "You're telling me a gar licked this bread?", "Blood drive? It has a license?", "Your all right? I thought you're all LEFT", "Did you know that a frog can jump higher that the Eiffel tower? This is because Eiffel tower cannot jump.", "Re:Fridgerator? I heard about the vending machine isekai but this is getting ridiculous", "Shoes smell? They don't have noses", "Why can't dinosaurs clap their hands? Because they are extinct", "", "", "", "", "", ""]
   katTutComedyOld = []
   random.shuffle(katTutComedyNew)
   print("You see Kat Tut on stage in his famous outfit from Peggle Nights\n")
@@ -998,10 +997,11 @@ def background(gif_name):
 
 def playAudio(track_name):
     global current_audio
+    stopAudio()
     audio_file, should_loop = audio_files[track_name]
     current_audio = f"{audio_file}|{should_loop}"
 
-def stopAudio():
+def stopAudio(): ##Fallback in case having it in playAudio doesnt work
     global current_audio
     current_audio = ""
 

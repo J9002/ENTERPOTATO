@@ -1,5 +1,7 @@
 ##UPDATE LOG FOR ENTERPOTATO##
-Ver. Beta 1.0 - Version turned in to college, basic functionality, incomplete story, bugs
+Ver. Beta 1.0 - Version turned in to college, just the basic functionality, incomplete story (savePointFive), many bugs
 Ver. Beta 1.1 - Bug fixes, folders added
 Ver. Beta 1.2 - Added audio [Only worked on windows], and graphics [Inconsistent], many bugs
-Ver. Beta 1.3 {CURRENT} - Audio and graphics fixed, now fully compatable with browser, [Audio & Graphics need to be tested in desktop enivronments], New audio files added, New graphic files added
+Ver. Beta 1.3 - Audio and graphics fixed, now fully compatable with browser, [Audio & Graphics need to be tested in desktop enivronments], New audio files added, New graphic files added
+Ver. Beta 1.4 - Fixed bugs in Casino and Kat Tut Comedy/Trivia
+Ver. Beta 1.5 {CURRENT} - Adding audio and graphics up to end of savePoint 5
