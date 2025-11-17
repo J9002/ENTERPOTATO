@@ -1,3 +1,4 @@
+##run git push origin ENTERPOTATO to update to repo##
 ##UPDATE LOG FOR ENTERPOTATO##
 Ver. Beta 1.0 - Version turned in to college, just the basic functionality, incomplete story (savePointFive), many bugs
 Ver. Beta 1.1 - Bug fixes, folders added
