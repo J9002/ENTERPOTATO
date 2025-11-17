@@ -1,4 +1,4 @@
-ver = "Beta 1.2"
+ver = "Beta 1.3"
 import random
 import time
 import pyinputplus as pyip
@@ -876,11 +876,11 @@ current_gif = ""
 current_audio = ""
 
 audio_files = {
-    "PeggleJazz": "PeggleJazz.mp3",
-    "PeggleMarch": "PeggleMarch.mp3",
-    "PeggleSynth": "PeggleSynth.mp3",
-    "Lapis": "LapisPhilosophorum.mp3",
-    "Save": "CharmlessMan.mp3"
+    "PeggleJazz": ("PeggleJazz.mp3", True),
+    "PeggleMarch": ("PeggleMarch.mp3", True),
+    "PeggleSynth": ("PeggleSynth.mp3", True),
+    "Lapis": ("LapisPhilosophorum.mp3", True),
+    "Save": ("CharmlessMan.mp3", False)
 }
 
 @app.route('/')
@@ -923,8 +923,9 @@ def index():
             function updateAudio() {
                 const audioPlayer = document.getElementById('audioPlayer');
                 if (currentAudio) {
-                    audioPlayer.src = '/audio/' + currentAudio;
-                    audioPlayer.loop = true;
+                    const [audioFile, shouldLoop] = currentAudio.split('|');
+                    audioPlayer.src = '/audio/' + audioFile;
+                    audioPlayer.loop = shouldLoop === 'true';
                     audioPlayer.play().catch(e => console.log('Audio play failed:', e));
                 } else {
                     audioPlayer.pause();
@@ -997,7 +998,8 @@ def background(gif_name):
 
 def playAudio(track_name):
     global current_audio
-    current_audio = audio_files[track_name]
+    audio_file, should_loop = audio_files[track_name]
+    current_audio = f"{audio_file}|{should_loop}"
 
 def stopAudio():
     global current_audio
@@ -1032,7 +1034,7 @@ def saveLoad():
 def main():
   """GAME SEQUENCE (VERY IMPORTANT)"""
   getStats()
-  background("yakuza-goro.gif")
+  background("teto-house.gif")
   os.system('clear')
   if savePoint == 0:
     enterPotatoSetup()
