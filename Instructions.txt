@@ -1,0 +1,14 @@
+## Instructions to run ENTERPOTATO - GitHub CodeSpaces Ed. ##
+1. Create a GitHub account (Github.com)
+2. Create a new repo (Empty)
+3. Create a codespace on main
+4. Open the codespace
+5. Open your file editor
+6. Open the folder "ENTERPOTATO" - Located next to this file
+7. Transfer all of the files into the GitHub codespace (make sure everything is organized the same way and no names are changed)
+8. Install python extension (Should have a popup)
+9. Open a new terminal, and type the following:
+    a. pip install pyinputplus
+    b. pip install flask
+    (that should be it, when you run the game if it says [Module] is missing, just run pip install [Missing_Module])
+10. Run ENTERPOTATO
