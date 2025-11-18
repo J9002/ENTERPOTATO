@@ -10,6 +10,7 @@ import logging
 
 def enterPotatoSetup():
   """INTRO SEQUENCE"""
+  global battleSet
   playAudio("PeggleSynth")
   print("Welcome to ENTER POTATO,\n")
   time.sleep(0.5)
@@ -34,12 +35,16 @@ def enterPotatoSetup():
     print("You really don't like crimes\nSad :(")
   elif crimesAmountGoal >= 50:
     print("Wow, you really like crimes\nGood :)")
-  time.sleep
+  time.sleep(1)
   difficultyAns = pyip.inputMenu(["Regular", "Betterer"], "What type of potato do you think you are?\n")
   if difficultyAns == "Regular":
     battleSet = 'abcdefghijklmnopqrstuvwxyz'
   else:
     battleSet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  global player
+  if not os.path.exists("GameSaveFile.txt"):
+      with open("GameSaveFile.txt", "w") as f:
+          f.write("0\n10\n5\n5\n1\n0\n0\n" + battleSet + "\n")
   print("This information will be useful later\nThank you for your contributions")
   time.sleep(2)
   print("\nE N T E R P O T A T O\n")
