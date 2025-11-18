@@ -688,59 +688,12 @@ def getRichQuick():
 
   """Kat Tut Comedy And Trivia"""
 def katTutEvent():
-  katTutComedyNew = ["You're telling me a shrimp fried this rice?", "Road work ahead, uh yeah, I sure hope it does", "Bird flu, yeah, they tend to do that", "Apartment complex? I find it quite simple really", "If wood fired Pizza? How is Pizza supposed to get a job now?", "What's up stairs? They can't talk", "Chef's kiss? Do they really?", "You're telling me a gar licked this bread?", "Blood drive? It has a license?", "Your all right? I thought you're all LEFT", "Did you know that a frog can jump higher that the Eiffel tower? This is because Eiffel tower cannot jump.", "Re:Fridgerator? I heard about the vending machine isekai but this is getting ridiculous", "Shoes smell? They don't have noses", "Why can't dinosaurs clap their hands? Because they are extinct", "", "", "", "", "", ""]
+  katTutComedyNew = ["You're telling me a shrimp fried this rice?", "Road work ahead, uh yeah, I sure hope it does", "Bird flu, yeah, they tend to do that", "Apartment complex? I find it quite simple really", "If wood fired Pizza? How is Pizza supposed to get a job now?", "What's up stairs? They can't talk", "Chef's kiss? Do they really?", "You're telling me a gar licked this bread?", "Blood drive? It has a license?", "Your all right? I thought you're all LEFT", "Did you know that a frog can jump higher that the Eiffel tower? This is because Eiffel tower cannot jump.", "Re:Fridgerator? I heard about the vending machine isekai but this is getting ridiculous", "Shoes smell? They don't have noses", "Why can't dinosaurs clap their hands? Because they are extinct", "Slippery when wet? I'd be shocked if it wasn't", "Paper jam? Sounds awful, why would you make that?", "Fire exit? Then where am I supposed to leave?", "", "", ""]
   katTutComedyOld = []
   random.shuffle(katTutComedyNew)
   print("You see Kat Tut on stage in his famous outfit from Peggle Nights\n")
-  time.sleep(2.5)
-  print("""\n\n\n
-                                               ▓▓▓▓▓                                                
-                                          ▓▓▓▓▓▓▓▓▓▓▓▓▓▓                                            
-                                        ▓▓▒▒▒▒░░▒▓▓▓▓▓▒▓▓▓                                          
-                                      █▓▓░░░▒▓▓▓▓▓▓▓▓▓▓▒▓▓▓▓    ▓▓▓▓▓▓                              
-                              ▓▓▓▓▓  █▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█▓▓▓▓▓▓▓██▓▓▓▓                             
-                              ▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓███▓▓▒▒▒                              
-                              ▒▒▒▓▓▓▓▓▓▓▒▒▒▒▓▓▓█▒▒▓▓▓▓▓▓▓▓▓▓▓██▓▓▒▒▒▒▒                              
-                              ▒▒▒▒▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓██▓▓▓▒▒▒▒▓                              
-                               ▒▒▒▒▓▓██▓▓▓▓▓▓▓▓▓▓▓█▒░░░▒▓▓▓███▓▓▓▒▒▒▓                               
-                                ▒▒▒▒▓▓░░░░░▒▓▓▓▓▓▓░░░░░░░░▒▓███▓▒▒▒▓                                
-                                 ▒▒▓▓░░░░░░░▒▓▓▓▓░░░░░░░░░░▒███▓▓▓▓▓                                
-                                  ▓▓▒░░░░░▒░░▒▓▓▓░░░░░▓▓░░░░▓███▓▓▓▓                                
-                                 ▓▓▓░░░░▓██▒░▒▓▓▓░░░▒███▒░░░▓████▓▓▓                                
-                                 ▓▓▓░░░░▓█▓▒░▒▓▓▓░░░░▓▓▓▒░░░▓████▓▓                                 
-                                ▒░░░░░░░▒▒▒░░▒▓▓█▓░░░░░░░░░░░▒▓███▓                                 
-                              ▓▒░░▒▒▒▒▒▒░░░▒▒▒▒▒▒▒░░▒▒▒░▒▒▓▒▒▒▒▓███▒▒                               
-                              ▓▒▒▓▓▓▒▒░░░░░▓▓▓▓█▒░░░▒▓▒▒▓▓░░▒▒▓▓██▓▒░▒                              
-                               ▒▒▒▒▓▓▒░░░░▒▒▒▓▒▒░░▒▒▒▓▓▓▒▒▒▒▒▓▓▓█▓░░░▒▓▓                            
-                               ▒▒▓▓▒▒▒▒▒▒▒▒▓▓▓▒▒▒▒▒▒▓▓▓▒▒▒▒▒▓▓▓▓▒░░░░▒▓████▓▓                       
-                           ▓▒░░░░░▒▒░░▒▓▓▓███████▓▓▓▓▒▒▒▒▒▒▓▓▓▓▒░░░░▒▓▓▓▓▓▓██▓▓▓▓                   
-                        ▓▓▓▓▒░░░░░░░▒▒░░░▒▒▓▓▓▓██▓▒▒▒▒▒▒▒▒▒▒▒░░░░░░▒▒▓█▓▓▒▒▓▓██▓▓▓▓                 
-                      ▓▓▓▓▓▒▒▒░░▒▒▒▒▒░░░░░░░░░▒▒▒▒▒▒▒░░░░░░░░░░░░░░▒▓█▓▒▒░░░▒▓▓▓▓▓▓▓▓               
-                    ▓▓█▓▓▓▓▒▒▒▒▒▓▓▓▓▒▒░░░░░░░░▒▒▒▒▒░░▒▓▓▓▒░░░▒▒░░░░▒▓█▓▒░░░░░░▒▓▓▓▓▓▓▓▓             
-                  ▓███▓▓▓▓▓▒░▒▓▓▓▓▓▓▒▒░░░░░░░░░░░░▒▓▓▓███▓▒░░▒▓▓▒▒▒▓█▓▓▓▒░░░░░▒▒▓▓▓▓▓▓▓▒            
-                ▓▓██▓▓▓▓▓█▓▒▒▓▓▓▒░▒▓▒▒░░░░░░░░░▒▓▓▓▓▓▓▓▒▒▓▓▒▒▓▓▓▒▒▓█▓▓▓▒▒▒▒▒░▒▒▒▓▓▓▓▓▓▓▓▓           
-              ▓▓▓▓▓▓▓▓███▓▓▓▓▓▒░░░░▓▓▒▒░░░▒░░▒▓▓█▓▒▒▒░░░░▒▓▓▒▒▒░▒▓█▓▓▒░░░░░░▒▓▓▓▓▓▓▓▓▓▓▓▓▓          
-           ▓▓▓▓▓▓▓▓▓▓██▓▓▓▒▒▒▒▒░░░░▒▓▒▒░▒░░▒▓▓▓▓▒▒░░░░░░░░▓▓▒░░▒▓█▓▓▓▓▓▓▒▒░▒▒▓▓▓▓▓▓▓▓▓▓▓█▓▒         
-            ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░░░░░░▒▓▓▒░░▒▓▓▓▒▒░░░░░░░░░░░▒▓▓▒▒▓▓▓▓▓▓▓▓▓███▓▓▓▓▓▓▓▓▓▓▓▓▓▓██▓▓▓▒     
-             ▓▓▓▓▓▓▓▓▓▓██▓▓▒▒░░░░░░▒▓▓▒▒▓▓▓▒░░░░░░░░░░░░░░░▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓██▓▓▓█▓▓▓▓▓███▓▓▓▓▓▓▒     
-               ▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░░░░▒▓▓▒▓▓▓▒░░░░░░░░░░░░░░░░▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓▓▓▓▒       
-                  ▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░▒▓▓▓▓▓▒░░░░░░░░░░░░░░░░▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒           
-                       ▓▓▓▓▓▓▓▓▓▓▒▒▒▓▓▓▓▓▒░░░░░░░░░░░░░░▒▒▒▒▒▒▓▓▓▓███████▓▓▓▓▓▓▒▒                   
-                        ▓█▓▓▓▓▓▒▒▓▓▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████████████▓▓                         
-                        ▓▓██▓▓▓▒▒▓▓▓██▓▓▓▒▒▒▓▓▓▓▓▓▓▒▒▒▓▓▓▓▓▓▓▓███████████▓                          
-                          ▓▓▓▓▓▓▒▒▓▓▓▒▒▓█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓███████████▓                           
-                          ▓▒▒▓▓▓▓▓▓▓▓▓▓█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████▓██▓▓▓▓▓                           
-                        ▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓██████▓▓▓▓▓██████▓▓█▓▓▓▓▓▓▓▓▓▓▓▓▓▓                           
-                      ▒▒░░░░░░░▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                           
-                    ▒▒▒░░░░░░░░░░░░▒▒▒▓▓▓         ▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒░▒▒▒▒▓                         
-                   ▓▓▓▓▓▒░░░░░░░░░░░░░▒▒▓           ▓▓▓▒▓▓▒▒░░░░░░░░░░░░▒▓▓▓                        
-                   ▒▒▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓             ▓▒▒▒▒▒░░░░░░░░░▒▓▓▓▓▓▓                       
-                  ▒▓▓▓▓▓████▓▓▓▓▓▓▓▓███▓▓▓             ▓▓▒▒▒▒░░░▒▒▒▒▓▓▓▓▓▓▓▓                        
-                ▒▓▓▓▓▓▓█▓▓▓█████████▓▓▓▓▓              ▓▓▓▓█▓▓▓▓▓▒▓▓█████▓                          
-                ▓▓▓▓█▓▓▓▓▓▓▓▓███▓▓                     ▓▓▓▓▓█████▓▓▓▓▓▓███▓▓                        
-                 ▓▓▓▓███▓██▓▓▓▓                           ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                        
-                                                                ▓▓▓▓▓▓▓▓▓▓▓▓▓                       
-                                                                  ▓▓▓▓▓▓▓▓▓▓                        \n\n\n""")
+  time.sleep(1)
+  background('kat-tut.gif')
   time.sleep(3.5)
   print('"You there, in the crowd, come join me up on stage for a game of trivia!" - Kat Tut\n')
   time.sleep(2)
@@ -790,18 +743,23 @@ def katTutEvent():
       if whatPLayerSaid == correct:
        print('"Bingo!" - Kat Tut\n')
        amountCorrect += 1
-       time.sleep(1.5)
+       background('cat-breakdance.gif')
+       time.sleep(4.5)
+       background('kat-tut.gif')
       else:
         print('"Major Skill Issue" - Kat Tut\n')
-        amountCorrect -= 1
-        time.sleep(1.5)
+        background('cat-fire.gif')
+        time.sleep(3)
+        background('kat-tut.gif')
       print("Kat Tut Comedy Time!\n")
       time.sleep(1.5)
       sayJoke = katTutComedyNew[random.randint(0, len(katTutComedyNew)-1)]
       katTutComedyOld.append(sayJoke)
       katTutComedyNew.remove(sayJoke)
       print('"{}" - Kat Tut\n'.format(sayJoke))
+      background('puekeko.gif')
       time.sleep(1.5)
+      background('kat-tut.gif')
     except IndexError:
       print("Either I messed up somehow or you are so bad at trivia that you have run out of questions\n")
       time.sleep(2)
