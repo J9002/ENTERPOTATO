@@ -1,4 +1,4 @@
-ver = "Beta 1.5 - currently in development"
+ver = "Beta 1.5 - currently in development" 
 import random
 import time
 import pyinputplus as pyip
@@ -59,14 +59,14 @@ def getStats():
     try:
       with open("GameSaveFile.txt", "r") as gameSaveStats:
         saveFileLines = gameSaveStats.readlines()
-        player = {"health": int(saveFileLines[1]), 
+      player = {"health": int(saveFileLines[1]), 
                 "attack": int(saveFileLines[2]), 
                 "speed": int(saveFileLines[3]),
                 "critChance": int(saveFileLines[4]),
                 "money": int(saveFileLines[5]),
                 "crimes": int(saveFileLines[6])}
-        battleSet = saveFileLines[7]
-        savePoint = int(saveFileLines[0])
+      battleSet = saveFileLines[7].strip()
+      savePoint = int(saveFileLines[0])
     except IndexError:
       raise Exception("Your save file is corrupted\n")
   elif not os.path.exists("GameSaveFile.txt"):
@@ -424,26 +424,27 @@ def battleLose():
 """ADDITIONAL SCRIPTS"""
 
 def save(savePoint):
+  global player
   playAudio("Save")
   saveLoad()
   savePoint += 1
   with open("GameSaveFile.txt", "r") as gameSaveStats:
     saveFileLines = gameSaveStats.readlines()
-    saveFileLines[0] = str(savePoint) + "\n"
-    saveFileLines[1] = str(player.get("health")) + "\n"
-    saveFileLines[2] = str(player.get("attack")) + "\n"
-    saveFileLines[3] = str(player.get("speed")) + "\n"
-    saveFileLines[4] = str(player.get("critChance")) + "\n"
-    saveFileLines[5] = str(player.get("money")) + "\n"
-    saveFileLines[6] = str(player.get("crimes")) + "\n"
-    saveFileLines[7] = battleSet
-    gameSaveStats = open("GameSaveFile.txt", "w")
+  saveFileLines[0] = str(savePoint) + "\n"
+  saveFileLines[1] = str(player.get("health")) + "\n"
+  saveFileLines[2] = str(player.get("attack")) + "\n"
+  saveFileLines[3] = str(player.get("speed")) + "\n"
+  saveFileLines[4] = str(player.get("critChance")) + "\n"
+  saveFileLines[5] = str(player.get("money")) + "\n"
+  saveFileLines[6] = str(player.get("crimes")) + "\n"
+  saveFileLines[7] = battleSet
+  with open("GameSaveFile.txt", "w") as gameSaveStats:
     gameSaveStats.writelines(saveFileLines)
-    gameSaveStats.close()
   print("Game Saved!\n")
   stopAudio()
 
 def letsGoGambling():
+  playAudio('Lapis')
   completed = 0
   completed5050 = False
   completedWAR = False
@@ -581,10 +582,10 @@ def sillyGame():
       print("If it is a tie, you both lose your cards\n")
       print("Good luck!\n")
       time.sleep(1)
+      playAudio('DS_Cinder')
+      time.sleep(2)
       enemyHand = deck[:26]
       youHand = deck[26:52]
-      print(youHand)
-      print(enemyHand)
       while len(youHand) != 0 and len(enemyHand) != 0:
         try:
           enemyPlay = random.choice(enemyHand)
@@ -607,7 +608,7 @@ def sillyGame():
           else:
             youHand.append(enemyPlay)
             enemyHand.remove(enemyPlay)
-            time.sleep(0.15)
+            time.sleep(0.05)
             print("You won a {0}\n".format(enemyPlay))
         elif yourPlay < enemyPlay:
           if enemyPlay == 13:
@@ -620,7 +621,7 @@ def sillyGame():
           else:
             enemyHand.append(yourPlay)
             youHand.remove(yourPlay)
-            time.sleep(0.15)
+            time.sleep(0.05)
             print("You lost a {0}\n".format(enemyPlay))
         else:
           if yourPlay == enemyPlay:
@@ -645,6 +646,7 @@ def sillyGame():
         print("You lost!")
         time.sleep(0.5)
         print("{} money remaining\n".format(str(player.get("money"))))
+      stopAudio()
       return win
     elif playorNot == "no":
         print("P A T H E T I C\n")
@@ -905,6 +907,7 @@ app = Flask(__name__)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
+
 current_gif = ""
 current_audio = ""
 previous_gif = ""
@@ -914,6 +917,7 @@ audio_files = {
     "PeggleMarch": ("PeggleMarch.mp3", True),
     "PeggleSynth": ("PeggleSynth.mp3", True),
     "Lapis": ("LapisPhilosophorum.mp3", True),
+    "DS_Cinder": ("DS_Cinder.mp3", True),
     "Save": ("CharmlessMan.mp3", False)
 }
 
@@ -959,7 +963,7 @@ def index():
                 if (currentAudio) {
                     const [audioFile, shouldLoop] = currentAudio.split('|');
                     audioPlayer.src = '/audio/' + audioFile;
-                    audioPlayer.loop = shouldLoop === 'true';
+                    audioPlayer.loop = shouldLoop === '1';
                     audioPlayer.play().catch(e => console.log('Audio play failed:', e));
                 } else {
                     audioPlayer.pause();
@@ -1008,10 +1012,12 @@ def index():
     '''
 
 @app.route('/current_gif')
+
 def get_current_gif():
     return current_gif
 
 @app.route('/current_audio')
+
 def get_current_audio():
     return current_audio
 
@@ -1029,7 +1035,7 @@ def start_server():
 def background(gif_name):
     global current_gif, previous_gif
     if current_gif and current_gif != gif_name:
-      previous_gif = current_gif
+        previous_gif = current_gif
     current_gif = gif_name
 
 def revert_gif():
@@ -1042,11 +1048,11 @@ def playAudio(track_name):
     global current_audio
     stopAudio()
     audio_file, should_loop = audio_files[track_name]
-    current_audio = f"{audio_file}|{should_loop}"
+    current_audio = f"{audio_file}|{1 if should_loop else 0}"
 
-def stopAudio(): ##Fallback in case having it in playAudio doesnt work
-    global current_audio
-    current_audio = ""
+def stopAudio():
+  global current_audio
+  current_audio = ""
 
 server_thread = threading.Thread(target=start_server)
 server_thread.daemon = True
@@ -1122,6 +1128,7 @@ def savePointZero():
     savePointOne()
 
 def savePointOne():
+  playAudio('PeggleMarch')
   print("You wake up in the middle of a forest, you have no idea how you got there.\n")
   time.sleep(1)
   print("But you know that you have one goal, to outcrime the infamous mashed potato mafia\n")
@@ -1292,6 +1299,7 @@ def savePointTwo():
   time.sleep(1)
   print("You decide to start heading on the treacherous journey to the headquarters of the Mashed Potato Mafia\n")
   time.sleep(1)
+  playAudio('PeggleJazz')
   print("As you exit the borders of Potatoland, you see that there is a dramatic change in climate, going from a forest straight into a large, hot, barren desert\n")
   time.sleep(3)
   print("As you walk further into the desert, about 800 feet away from the borders of Potatoland, you decide to turn around to see how far in you are, but you notice that Potatoland has completely vanished\n")
