@@ -1,4 +1,4 @@
-ver = "Beta 1.5 - currently in development"
+ver = "Beta 1.5 - currently in development" 
 import random
 import time
 import pyinputplus as pyip
@@ -10,6 +10,7 @@ import logging
 
 def enterPotatoSetup():
   """INTRO SEQUENCE"""
+  global battleSet
   playAudio("PeggleSynth")
   print("Welcome to ENTER POTATO,\n")
   time.sleep(0.5)
@@ -34,12 +35,16 @@ def enterPotatoSetup():
     print("You really don't like crimes\nSad :(")
   elif crimesAmountGoal >= 50:
     print("Wow, you really like crimes\nGood :)")
-  time.sleep
+  time.sleep(1)
   difficultyAns = pyip.inputMenu(["Regular", "Betterer"], "What type of potato do you think you are?\n")
   if difficultyAns == "Regular":
     battleSet = 'abcdefghijklmnopqrstuvwxyz'
   else:
     battleSet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  global player
+  if not os.path.exists("GameSaveFile.txt"):
+      with open("GameSaveFile.txt", "w") as f:
+          f.write("0\n10\n5\n5\n1\n0\n0\n" + battleSet + "\n")
   print("This information will be useful later\nThank you for your contributions")
   time.sleep(2)
   print("\nE N T E R P O T A T O\n")
@@ -59,14 +64,14 @@ def getStats():
     try:
       with open("GameSaveFile.txt", "r") as gameSaveStats:
         saveFileLines = gameSaveStats.readlines()
-        player = {"health": int(saveFileLines[1]), 
+      player = {"health": int(saveFileLines[1]), 
                 "attack": int(saveFileLines[2]), 
                 "speed": int(saveFileLines[3]),
                 "critChance": int(saveFileLines[4]),
                 "money": int(saveFileLines[5]),
                 "crimes": int(saveFileLines[6])}
-        battleSet = saveFileLines[7]
-        savePoint = int(saveFileLines[0])
+      battleSet = saveFileLines[7].strip()
+      savePoint = int(saveFileLines[0])
     except IndexError:
       raise Exception("Your save file is corrupted\n")
   elif not os.path.exists("GameSaveFile.txt"):
@@ -313,6 +318,9 @@ def battleAttack(enemyStats, player, battleSet):
         if critA == critB:
           amountRight += player.get("attack")
           print("CRITICAL HIT!\n")
+          background('critical-hit.gif')
+          time.sleep(0.25)
+          revert_gif()
         else:
           amountRight += 1
     else:
@@ -418,36 +426,38 @@ def battleLose():
 
 #################################################################################
 
-"""ADDITIONAL SCRIPTS (SAVE SYS, CASINO, KAT TUT COMEDY AND TRIVIA)"""
+"""ADDITIONAL SCRIPTS"""
 
 def save(savePoint):
+  global player
   playAudio("Save")
   saveLoad()
   savePoint += 1
   with open("GameSaveFile.txt", "r") as gameSaveStats:
     saveFileLines = gameSaveStats.readlines()
-    saveFileLines[0] = str(savePoint) + "\n"
-    saveFileLines[1] = str(player.get("health")) + "\n"
-    saveFileLines[2] = str(player.get("attack")) + "\n"
-    saveFileLines[3] = str(player.get("speed")) + "\n"
-    saveFileLines[4] = str(player.get("critChance")) + "\n"
-    saveFileLines[5] = str(player.get("money")) + "\n"
-    saveFileLines[6] = str(player.get("crimes")) + "\n"
-    saveFileLines[7] = battleSet
-    gameSaveStats = open("GameSaveFile.txt", "w")
+  saveFileLines[0] = str(savePoint) + "\n"
+  saveFileLines[1] = str(player.get("health")) + "\n"
+  saveFileLines[2] = str(player.get("attack")) + "\n"
+  saveFileLines[3] = str(player.get("speed")) + "\n"
+  saveFileLines[4] = str(player.get("critChance")) + "\n"
+  saveFileLines[5] = str(player.get("money")) + "\n"
+  saveFileLines[6] = str(player.get("crimes")) + "\n"
+  saveFileLines[7] = battleSet
+  with open("GameSaveFile.txt", "w") as gameSaveStats:
     gameSaveStats.writelines(saveFileLines)
-    gameSaveStats.close()
   print("Game Saved!\n")
   stopAudio()
 
 def letsGoGambling():
+  playAudio('Lapis')
   completed = 0
   completed5050 = False
   completedWAR = False
   completedGetRichQuick = False
   luigiTEXT = ["You look like a Claude Lobster fan\n", "I, Am Luigi\n", "Have you tried winning?\n", "Theres no shame in losing to me.\n", "You seem like you would lose to Magikarp while having a Tera-Electric Miraidon\n", "You are not the best potato, I am\n", "Even Dr. Mario can't save your wallet now!\n", "You should just get gooderer\n", "Honor dies in the gambling hall.\n", "Your wallet will feel the pain of the tuffles\n", "Imagine losing to a retired 50 year old plumber.\n", "Tiger Drop won't negate the damage done to your credit score.\n", "This casino is very grateful to our generous sponsors: the number three and butter\n", "Potato.. I will cut you down, break you apart, splay the gore of your profane form across the STARS! I will chop you down until the very SHREDS CRY FOR MERCY! My hands shall RELISH ENDING YOU... HERE! AND! NOW!\n", "BEHOLD! THE POWER OF A GAMBLING ADDICT!\n", "I'll let you in on an little something, The Gambling game, it's not like boxing. The guy who gets beat down isn't the loser. It's the guy who can't tough it out until the end, He's the one who loses.\n", "NEVER RETREAT NEVER SURRENDER!!\n", "You are so weak I bet you think that the 1000-THR 'Earthmover' was a hard bossfight\n"]
   print("You have ${} money\n".format(player.get("money")))
-  time.sleep(1)
+  background('luigi-main.gif')
+  time.sleep(3)
   while completed != 3:
     print('"Which game do you want to play?" - Luigi\n')
     whichOne = pyip.inputMenu(['Roulette', "WAR", "Get rich quick!", "Exit."], numbered = True)
@@ -456,47 +466,77 @@ def letsGoGambling():
       result = roulette()
       if result:
         if not completed5050:
+          background('luigi-win.gif')
           completed += 1
           completed5050 = True
+          time.sleep(5)
+          revert_gif()
         else:
+          background('luigi-win.gif')
           print("You've already played this game, you get no completion points for this\n")
-          time.sleep(1)
+          time.sleep(5)
+          revert_gif()
       elif not result:
-        if completed5050:
-          print("You've already played this game, you get no completion points for this\n")
-          time.sleep(1)
+        background('luigi-lose.gif')
+        print("You lost, you get no completion points for this\n")
+        time.sleep(5)
+        revert_gif()
+        background('gigachad-luigi.gif')
         print("{} - Luigi\n".format(luigiMeanText))
+        time.sleep(5)
+        revert_gif() 
     elif whichOne == "WAR":
       result = sillyGame()
       if result:
         if not completedWAR:
+          background('luigi-win.gif')
           completed += 1
           completedWAR = True
+          time.sleep(5)
+          revert_gif()
         else:
+          background('luigi-win.gif')
           print("You've already played this game, you get no completion points for this\n")
-          time.sleep(1)
+          time.sleep(5)
+          revert_gif()
       elif not result:
-        if completedWAR:
-          print("You've already played this game, you get no completion points for this\n")
-          time.sleep(1)
+        background('luigi-lose.gif')
+        print("You lost, you get no completion points for this\n")
+        time.sleep(5)
+        revert_gif()
+        background('gigachad-luigi.gif')
         print("{} - Luigi\n".format(luigiMeanText))
+        time.sleep(5)
+        revert_gif() 
     elif whichOne == "Get rich quick!":
       result = getRichQuick()
       if result:
         if not completedGetRichQuick:
+          background('luigi-win.gif')
           completed += 1
           completedGetRichQuick = True
+          time.sleep(5)
+          revert_gif()
         else:
+          background('luigi-win.gif')
           print("You've already played this game, you get no completion points for this\n")
-          time.sleep(1)
+          time.sleep(5)
+          revert_gif()
       elif not result:
-        if completedGetRichQuick:
-          print("You've already played this game, you get no completion points for this\n")
-          time.sleep(1)
+        background('luigi-lose.gif')
+        print("You lost, you get no completion points for this\n")
+        time.sleep(5)
+        revert_gif()
+        background('gigachad-luigi.gif')
         print("{} - Luigi\n".format(luigiMeanText))
+        time.sleep(5)
+        revert_gif() 
     elif whichOne == "Exit.":
+      background('gigachad-luigi.gif')
       print("You have ${} money\n".format(player.get("money")))
       print("THERE IS NO ESCAPE FROM THE CASINO!\n")
+      time.sleep(5)
+      revert_gif()
 
 def roulette():
   win = False
@@ -547,10 +587,10 @@ def sillyGame():
       print("If it is a tie, you both lose your cards\n")
       print("Good luck!\n")
       time.sleep(1)
+      playAudio('DS_Cinder')
+      time.sleep(2)
       enemyHand = deck[:26]
       youHand = deck[26:52]
-      print(youHand)
-      print(enemyHand)
       while len(youHand) != 0 and len(enemyHand) != 0:
         try:
           enemyPlay = random.choice(enemyHand)
@@ -573,7 +613,7 @@ def sillyGame():
           else:
             youHand.append(enemyPlay)
             enemyHand.remove(enemyPlay)
-            time.sleep(0.15)
+            time.sleep(0.05)
             print("You won a {0}\n".format(enemyPlay))
         elif yourPlay < enemyPlay:
           if enemyPlay == 13:
@@ -586,7 +626,7 @@ def sillyGame():
           else:
             enemyHand.append(yourPlay)
             youHand.remove(yourPlay)
-            time.sleep(0.15)
+            time.sleep(0.05)
             print("You lost a {0}\n".format(enemyPlay))
         else:
           if yourPlay == enemyPlay:
@@ -611,6 +651,7 @@ def sillyGame():
         print("You lost!")
         time.sleep(0.5)
         print("{} money remaining\n".format(str(player.get("money"))))
+      stopAudio()
       return win
     elif playorNot == "no":
         print("P A T H E T I C\n")
@@ -652,59 +693,12 @@ def getRichQuick():
 
   """Kat Tut Comedy And Trivia"""
 def katTutEvent():
-  katTutComedyNew = ["You're telling me a shrimp fried this rice?", "Road work ahead, uh yeah, I sure hope it does", "Bird flu, yeah, they tend to do that", "Apartment complex? I find it quite simple really", "If wood fired Pizza? How is Pizza supposed to get a job now?", "What's up stairs? They can't talk", "Chef's kiss? Do they really?", "You're telling me a gar licked this bread?", "Blood drive? It has a license?", "Your all right? I thought you're all LEFT", "Did you know that a frog can jump higher that the Eiffel tower? This is because Eiffel tower cannot jump.", "Re:Fridgerator? I heard about the vending machine isekai but this is getting ridiculous", "Shoes smell? They don't have noses", "Why can't dinosaurs clap their hands? Because they are extinct", "", "", "", "", "", ""]
+  katTutComedyNew = ["You're telling me a shrimp fried this rice?", "Road work ahead, uh yeah, I sure hope it does", "Bird flu, yeah, they tend to do that", "Apartment complex? I find it quite simple really", "If wood fired Pizza? How is Pizza supposed to get a job now?", "What's up stairs? They can't talk", "Chef's kiss? Do they really?", "You're telling me a gar licked this bread?", "Blood drive? It has a license?", "Your all right? I thought you're all LEFT", "Did you know that a frog can jump higher that the Eiffel tower? This is because Eiffel tower cannot jump.", "Re:Fridgerator? I heard about the vending machine isekai but this is getting ridiculous", "Shoes smell? They don't have noses", "Why can't dinosaurs clap their hands? Because they are extinct", "Slippery when wet? I'd be shocked if it wasn't", "Paper jam? Sounds awful, why would you make that?", "Fire exit? Then where am I supposed to leave?", "", "", ""]
   katTutComedyOld = []
   random.shuffle(katTutComedyNew)
   print("You see Kat Tut on stage in his famous outfit from Peggle Nights\n")
-  time.sleep(2.5)
-  print("""\n\n\n
-                                               ▓▓▓▓▓                                                
-                                          ▓▓▓▓▓▓▓▓▓▓▓▓▓▓                                            
-                                        ▓▓▒▒▒▒░░▒▓▓▓▓▓▒▓▓▓                                          
-                                      █▓▓░░░▒▓▓▓▓▓▓▓▓▓▓▒▓▓▓▓    ▓▓▓▓▓▓                              
-                              ▓▓▓▓▓  █▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█▓▓▓▓▓▓▓██▓▓▓▓                             
-                              ▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓███▓▓▒▒▒                              
-                              ▒▒▒▓▓▓▓▓▓▓▒▒▒▒▓▓▓█▒▒▓▓▓▓▓▓▓▓▓▓▓██▓▓▒▒▒▒▒                              
-                              ▒▒▒▒▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓██▓▓▓▒▒▒▒▓                              
-                               ▒▒▒▒▓▓██▓▓▓▓▓▓▓▓▓▓▓█▒░░░▒▓▓▓███▓▓▓▒▒▒▓                               
-                                ▒▒▒▒▓▓░░░░░▒▓▓▓▓▓▓░░░░░░░░▒▓███▓▒▒▒▓                                
-                                 ▒▒▓▓░░░░░░░▒▓▓▓▓░░░░░░░░░░▒███▓▓▓▓▓                                
-                                  ▓▓▒░░░░░▒░░▒▓▓▓░░░░░▓▓░░░░▓███▓▓▓▓                                
-                                 ▓▓▓░░░░▓██▒░▒▓▓▓░░░▒███▒░░░▓████▓▓▓                                
-                                 ▓▓▓░░░░▓█▓▒░▒▓▓▓░░░░▓▓▓▒░░░▓████▓▓                                 
-                                ▒░░░░░░░▒▒▒░░▒▓▓█▓░░░░░░░░░░░▒▓███▓                                 
-                              ▓▒░░▒▒▒▒▒▒░░░▒▒▒▒▒▒▒░░▒▒▒░▒▒▓▒▒▒▒▓███▒▒                               
-                              ▓▒▒▓▓▓▒▒░░░░░▓▓▓▓█▒░░░▒▓▒▒▓▓░░▒▒▓▓██▓▒░▒                              
-                               ▒▒▒▒▓▓▒░░░░▒▒▒▓▒▒░░▒▒▒▓▓▓▒▒▒▒▒▓▓▓█▓░░░▒▓▓                            
-                               ▒▒▓▓▒▒▒▒▒▒▒▒▓▓▓▒▒▒▒▒▒▓▓▓▒▒▒▒▒▓▓▓▓▒░░░░▒▓████▓▓                       
-                           ▓▒░░░░░▒▒░░▒▓▓▓███████▓▓▓▓▒▒▒▒▒▒▓▓▓▓▒░░░░▒▓▓▓▓▓▓██▓▓▓▓                   
-                        ▓▓▓▓▒░░░░░░░▒▒░░░▒▒▓▓▓▓██▓▒▒▒▒▒▒▒▒▒▒▒░░░░░░▒▒▓█▓▓▒▒▓▓██▓▓▓▓                 
-                      ▓▓▓▓▓▒▒▒░░▒▒▒▒▒░░░░░░░░░▒▒▒▒▒▒▒░░░░░░░░░░░░░░▒▓█▓▒▒░░░▒▓▓▓▓▓▓▓▓               
-                    ▓▓█▓▓▓▓▒▒▒▒▒▓▓▓▓▒▒░░░░░░░░▒▒▒▒▒░░▒▓▓▓▒░░░▒▒░░░░▒▓█▓▒░░░░░░▒▓▓▓▓▓▓▓▓             
-                  ▓███▓▓▓▓▓▒░▒▓▓▓▓▓▓▒▒░░░░░░░░░░░░▒▓▓▓███▓▒░░▒▓▓▒▒▒▓█▓▓▓▒░░░░░▒▒▓▓▓▓▓▓▓▒            
-                ▓▓██▓▓▓▓▓█▓▒▒▓▓▓▒░▒▓▒▒░░░░░░░░░▒▓▓▓▓▓▓▓▒▒▓▓▒▒▓▓▓▒▒▓█▓▓▓▒▒▒▒▒░▒▒▒▓▓▓▓▓▓▓▓▓           
-              ▓▓▓▓▓▓▓▓███▓▓▓▓▓▒░░░░▓▓▒▒░░░▒░░▒▓▓█▓▒▒▒░░░░▒▓▓▒▒▒░▒▓█▓▓▒░░░░░░▒▓▓▓▓▓▓▓▓▓▓▓▓▓          
-           ▓▓▓▓▓▓▓▓▓▓██▓▓▓▒▒▒▒▒░░░░▒▓▒▒░▒░░▒▓▓▓▓▒▒░░░░░░░░▓▓▒░░▒▓█▓▓▓▓▓▓▒▒░▒▒▓▓▓▓▓▓▓▓▓▓▓█▓▒         
-            ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░░░░░░▒▓▓▒░░▒▓▓▓▒▒░░░░░░░░░░░▒▓▓▒▒▓▓▓▓▓▓▓▓▓███▓▓▓▓▓▓▓▓▓▓▓▓▓▓██▓▓▓▒     
-             ▓▓▓▓▓▓▓▓▓▓██▓▓▒▒░░░░░░▒▓▓▒▒▓▓▓▒░░░░░░░░░░░░░░░▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓██▓▓▓█▓▓▓▓▓███▓▓▓▓▓▓▒     
-               ▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░░░░▒▓▓▒▓▓▓▒░░░░░░░░░░░░░░░░▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓▓▓▓▒       
-                  ▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░▒▓▓▓▓▓▒░░░░░░░░░░░░░░░░▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒           
-                       ▓▓▓▓▓▓▓▓▓▓▒▒▒▓▓▓▓▓▒░░░░░░░░░░░░░░▒▒▒▒▒▒▓▓▓▓███████▓▓▓▓▓▓▒▒                   
-                        ▓█▓▓▓▓▓▒▒▓▓▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████████████▓▓                         
-                        ▓▓██▓▓▓▒▒▓▓▓██▓▓▓▒▒▒▓▓▓▓▓▓▓▒▒▒▓▓▓▓▓▓▓▓███████████▓                          
-                          ▓▓▓▓▓▓▒▒▓▓▓▒▒▓█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓███████████▓                           
-                          ▓▒▒▓▓▓▓▓▓▓▓▓▓█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████▓██▓▓▓▓▓                           
-                        ▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓██████▓▓▓▓▓██████▓▓█▓▓▓▓▓▓▓▓▓▓▓▓▓▓                           
-                      ▒▒░░░░░░░▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                           
-                    ▒▒▒░░░░░░░░░░░░▒▒▒▓▓▓         ▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒░▒▒▒▒▓                         
-                   ▓▓▓▓▓▒░░░░░░░░░░░░░▒▒▓           ▓▓▓▒▓▓▒▒░░░░░░░░░░░░▒▓▓▓                        
-                   ▒▒▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓             ▓▒▒▒▒▒░░░░░░░░░▒▓▓▓▓▓▓                       
-                  ▒▓▓▓▓▓████▓▓▓▓▓▓▓▓███▓▓▓             ▓▓▒▒▒▒░░░▒▒▒▒▓▓▓▓▓▓▓▓                        
-                ▒▓▓▓▓▓▓█▓▓▓█████████▓▓▓▓▓              ▓▓▓▓█▓▓▓▓▓▒▓▓█████▓                          
-                ▓▓▓▓█▓▓▓▓▓▓▓▓███▓▓                     ▓▓▓▓▓█████▓▓▓▓▓▓███▓▓                        
-                 ▓▓▓▓███▓██▓▓▓▓                           ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                        
-                                                                ▓▓▓▓▓▓▓▓▓▓▓▓▓                       
-                                                                  ▓▓▓▓▓▓▓▓▓▓                        \n\n\n""")
+  time.sleep(1)
+  background('kat-tut.gif')
   time.sleep(3.5)
   print('"You there, in the crowd, come join me up on stage for a game of trivia!" - Kat Tut\n')
   time.sleep(2)
@@ -754,18 +748,23 @@ def katTutEvent():
       if whatPLayerSaid == correct:
        print('"Bingo!" - Kat Tut\n')
        amountCorrect += 1
-       time.sleep(1.5)
+       background('cat-breakdance.gif')
+       time.sleep(4.5)
+       background('kat-tut.gif')
       else:
         print('"Major Skill Issue" - Kat Tut\n')
-        amountCorrect -= 1
-        time.sleep(1.5)
+        background('cat-fire.gif')
+        time.sleep(3)
+        background('kat-tut.gif')
       print("Kat Tut Comedy Time!\n")
       time.sleep(1.5)
       sayJoke = katTutComedyNew[random.randint(0, len(katTutComedyNew)-1)]
       katTutComedyOld.append(sayJoke)
       katTutComedyNew.remove(sayJoke)
       print('"{}" - Kat Tut\n'.format(sayJoke))
+      background('puekeko.gif')
       time.sleep(1.5)
+      background('kat-tut.gif')
     except IndexError:
       print("Either I messed up somehow or you are so bad at trivia that you have run out of questions\n")
       time.sleep(2)
@@ -871,14 +870,17 @@ app = Flask(__name__)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
+
 current_gif = ""
 current_audio = ""
+previous_gif = ""
 
 audio_files = {
     "PeggleJazz": ("PeggleJazz.mp3", True),
     "PeggleMarch": ("PeggleMarch.mp3", True),
     "PeggleSynth": ("PeggleSynth.mp3", True),
     "Lapis": ("LapisPhilosophorum.mp3", True),
+    "DS_Cinder": ("DS_Cinder.mp3", True),
     "Save": ("CharmlessMan.mp3", False)
 }
 
@@ -924,7 +926,7 @@ def index():
                 if (currentAudio) {
                     const [audioFile, shouldLoop] = currentAudio.split('|');
                     audioPlayer.src = '/audio/' + audioFile;
-                    audioPlayer.loop = shouldLoop === 'true';
+                    audioPlayer.loop = shouldLoop === '1';
                     audioPlayer.play().catch(e => console.log('Audio play failed:', e));
                 } else {
                     audioPlayer.pause();
@@ -973,10 +975,12 @@ def index():
     '''
 
 @app.route('/current_gif')
+
 def get_current_gif():
     return current_gif
 
 @app.route('/current_audio')
+
 def get_current_audio():
     return current_audio
 
@@ -992,18 +996,26 @@ def start_server():
     app.run(host='0.0.0.0', port=5000, use_reloader=False, debug=False)
 
 def background(gif_name):
-    global current_gif
+    global current_gif, previous_gif
+    if current_gif and current_gif != gif_name:
+        previous_gif = current_gif
     current_gif = gif_name
+
+def revert_gif():
+    global current_gif, previous_gif
+    if previous_gif:
+        current_gif, previous_gif = previous_gif, current_gif
+    return current_gif
 
 def playAudio(track_name):
     global current_audio
     stopAudio()
     audio_file, should_loop = audio_files[track_name]
-    current_audio = f"{audio_file}|{should_loop}"
+    current_audio = f"{audio_file}|{1 if should_loop else 0}"
 
-def stopAudio(): ##Fallback in case having it in playAudio doesnt work
-    global current_audio
-    current_audio = ""
+def stopAudio():
+  global current_audio
+  current_audio = ""
 
 server_thread = threading.Thread(target=start_server)
 server_thread.daemon = True
@@ -1079,6 +1091,7 @@ def savePointZero():
     savePointOne()
 
 def savePointOne():
+  playAudio('PeggleMarch')
   print("You wake up in the middle of a forest, you have no idea how you got there.\n")
   time.sleep(1)
   print("But you know that you have one goal, to outcrime the infamous mashed potato mafia\n")
@@ -1249,6 +1262,7 @@ def savePointTwo():
   time.sleep(1)
   print("You decide to start heading on the treacherous journey to the headquarters of the Mashed Potato Mafia\n")
   time.sleep(1)
+  playAudio('PeggleJazz')
   print("As you exit the borders of Potatoland, you see that there is a dramatic change in climate, going from a forest straight into a large, hot, barren desert\n")
   time.sleep(3)
   print("As you walk further into the desert, about 800 feet away from the borders of Potatoland, you decide to turn around to see how far in you are, but you notice that Potatoland has completely vanished\n")
@@ -1456,7 +1470,8 @@ def savePointThree():
   print("As you enter, you follow a carpet on the floor that leads you to what appears to be the main desk of the establishment\n")
   time.sleep(1.5)
   print("You see a man sitting behind the desk, he looks like he is in his 50s, and he has a large mustache\n")
-  time.sleep(1)
+  background('luigi-explain.gif')
+  time.sleep(0.75)
   print('"I am Luigi, welcome to my casino" - Luigi\n')
   time.sleep(0.5)
   print('"You seem like a potato with a lot of money" - Luigi\n')
@@ -1777,6 +1792,12 @@ def endcredits():
   time.sleep(1.5)
   print("Special thanks to Peggle Deluxe for being an epic game, butter, and with the number 3\n")
   time.sleep(5)
+  os.system('clear')
+  print("Ill take a potato chip...\n")
+  time.sleep(1.5)
+  print("AND EAT IT!\n")
+  background('potatochip.gif')
+  time.sleep(3)
   quit()
 
 main()
