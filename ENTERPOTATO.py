@@ -449,7 +449,6 @@ def save(savePoint):
   stopAudio()
 
 def letsGoGambling():
-  playAudio('Lapis')
   completed = 0
   completed5050 = False
   completedWAR = False
@@ -651,7 +650,7 @@ def sillyGame():
         print("You lost!")
         time.sleep(0.5)
         print("{} money remaining\n".format(str(player.get("money"))))
-      stopAudio()
+      playAudio('Casino')
       return win
     elif playorNot == "no":
         print("P A T H E T I C\n")
@@ -881,6 +880,8 @@ audio_files = {
     "PeggleSynth": ("PeggleSynth.mp3", True),
     "Lapis": ("LapisPhilosophorum.mp3", True),
     "DS_Cinder": ("DS_Cinder.mp3", True),
+    "Arstotzka": ("Arstotzka.mp3", True),
+    "Casino": ("LuigisCasino.mp3", True),
     "Save": ("CharmlessMan.mp3", False)
 }
 
@@ -1462,6 +1463,7 @@ def savePointThree():
   print("When you look at the casino you see a large sign on the side of the building that reads 'LUIGI'S CASINO'\n")
   time.sleep(1)
   print("You walk up to the casino and head inside, the doors immediately slam shut behind you\n")
+  playAudio('Casino')
   time.sleep(0.5)
   print("The casino is full of game tables and people\n")
   time.sleep(1)
@@ -1800,4 +1802,3 @@ def endcredits():
   time.sleep(3)
   quit()
 
-main()
