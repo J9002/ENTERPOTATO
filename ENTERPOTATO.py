@@ -449,7 +449,6 @@ def save(savePoint):
   stopAudio()
 
 def letsGoGambling():
-  playAudio('Lapis')
   completed = 0
   completed5050 = False
   completedWAR = False
@@ -580,7 +579,7 @@ def sillyGame():
     playorNot = pyip.inputYesNo("Play?\n")
     if playorNot == "yes":
       wager = int(pyip.inputInt(min = 10, max = player.get("money"), prompt = "How much to wager?\n(Max wager = however much money you have, Min wager = 10)\n"))
-      print("Welcome to the silly game (Its just war if you've ever played)\n")
+      print("Welcome to WAR\n")
       time.sleep(1)
       print("Your goal is to get all of the cards in the deck\n")
       print("You get the opponent's card if your card is higher\n")
@@ -651,7 +650,7 @@ def sillyGame():
         print("You lost!")
         time.sleep(0.5)
         print("{} money remaining\n".format(str(player.get("money"))))
-      stopAudio()
+      playAudio('Casino')
       return win
     elif playorNot == "no":
         print("P A T H E T I C\n")
@@ -881,6 +880,15 @@ audio_files = {
     "PeggleSynth": ("PeggleSynth.mp3", True),
     "Lapis": ("LapisPhilosophorum.mp3", True),
     "DS_Cinder": ("DS_Cinder.mp3", True),
+    "Arstotzka": ("Arstotzka.mp3", True),
+    "Casino": ("LuigisCasino.mp3", True),
+    "Unwavering-Heart": ("Unwavering-Heart.mp3", True),
+    "Interplanetary-Spark": ("Interplanetary-Spark.mp3", True),
+    "Nube-Negra": ("Nube-Negra.mp3", True),
+    "Ardor": ("Soundscape-to-Ardor.mp3", True),
+    "Torn-Apart": ("Torn-Apart.mp3", True),
+    "Victory-Road": ("VictoryRoad.mp3", True),
+    "MagusPotato": ("Johnathan.mp3", True),
     "Save": ("CharmlessMan.mp3", False)
 }
 
@@ -1262,7 +1270,7 @@ def savePointTwo():
   time.sleep(1)
   print("You decide to start heading on the treacherous journey to the headquarters of the Mashed Potato Mafia\n")
   time.sleep(1)
-  playAudio('PeggleJazz')
+  playAudio('Nube-Negra')
   print("As you exit the borders of Potatoland, you see that there is a dramatic change in climate, going from a forest straight into a large, hot, barren desert\n")
   time.sleep(3)
   print("As you walk further into the desert, about 800 feet away from the borders of Potatoland, you decide to turn around to see how far in you are, but you notice that Potatoland has completely vanished\n")
@@ -1273,6 +1281,7 @@ def savePointTwo():
   time.sleep(1)
   print("The man also appears to be holding a bright silver scythe\n")
   time.sleep(1)
+  playAudio('MagusPotato')
   print('"I, am MagusPotato, I wander these deserts looking for those who have crossed the line" - MagusPotato\n')
   time.sleep(1)
   print("You ask him what line he is talking about\n")
@@ -1325,6 +1334,7 @@ def savePointTwo():
   print('"Follow this path to the end of the desert, you will be safe as long as you keep the goggles activated and stay on the path" - MagusPotato\n')
   time.sleep(1)
   print("Before you can thank MagusPotato, he says 'It seems that my work here is done' and suddenly vanishes, leaving you alone in the field\n")
+  playAudio('Nube-Negra')
   time.sleep(1)
   print("After walking down the path for a few miles, you wonder what happens when you turn off the goggles\n")
   time.sleep(1)
@@ -1462,6 +1472,7 @@ def savePointThree():
   print("When you look at the casino you see a large sign on the side of the building that reads 'LUIGI'S CASINO'\n")
   time.sleep(1)
   print("You walk up to the casino and head inside, the doors immediately slam shut behind you\n")
+  playAudio('Casino')
   time.sleep(0.5)
   print("The casino is full of game tables and people\n")
   time.sleep(1)
@@ -1793,7 +1804,7 @@ def endcredits():
   print("Special thanks to Peggle Deluxe for being an epic game, butter, and with the number 3\n")
   time.sleep(5)
   os.system('clear')
-  print("Ill take a potato chip...\n")
+  print("I'll take a potato chip...\n")
   time.sleep(1.5)
   print("AND EAT IT!\n")
   background('potatochip.gif')
