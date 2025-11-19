@@ -579,7 +579,7 @@ def sillyGame():
     playorNot = pyip.inputYesNo("Play?\n")
     if playorNot == "yes":
       wager = int(pyip.inputInt(min = 10, max = player.get("money"), prompt = "How much to wager?\n(Max wager = however much money you have, Min wager = 10)\n"))
-      print("Welcome to the silly game (Its just war if you've ever played)\n")
+      print("Welcome to WAR\n")
       time.sleep(1)
       print("Your goal is to get all of the cards in the deck\n")
       print("You get the opponent's card if your card is higher\n")
@@ -882,6 +882,11 @@ audio_files = {
     "DS_Cinder": ("DS_Cinder.mp3", True),
     "Arstotzka": ("Arstotzka.mp3", True),
     "Casino": ("LuigisCasino.mp3", True),
+    "Unwavering-Heart": ("Unwavering-Heart.mp3", True),
+    "Interplanetary-Spark": ("Interplanetary-Spark.mp3", True),
+    "Nube-Negra": ("Nube-Negra.mp3", True),
+    "Ardor": ("Soundscape-to-Ardor.mp3", True),
+    "Torn-Apart": ("Torn-Apart.mp3", True),
     "Save": ("CharmlessMan.mp3", False)
 }
 
@@ -1795,10 +1800,11 @@ def endcredits():
   print("Special thanks to Peggle Deluxe for being an epic game, butter, and with the number 3\n")
   time.sleep(5)
   os.system('clear')
-  print("Ill take a potato chip...\n")
+  print("I'll take a potato chip...\n")
   time.sleep(1.5)
   print("AND EAT IT!\n")
   background('potatochip.gif')
   time.sleep(3)
   quit()
 
+main()
