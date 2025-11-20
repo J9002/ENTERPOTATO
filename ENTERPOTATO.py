@@ -12,6 +12,7 @@ def enterPotatoSetup():
   """INTRO SEQUENCE"""
   global battleSet
   playAudio("PeggleSynth")
+  background("reigen-computer.gif")
   print("Welcome to ENTER POTATO,\n")
   time.sleep(0.5)
   print("A game with bad gameplay and even worse writing\n")
@@ -20,7 +21,7 @@ def enterPotatoSetup():
   time.sleep(0.5)
   print("This game is dedicated to all potatoes in existence\n")
   time.sleep(3)
-  print("\nYou will soon become THE POTATO, do you accept your fate?\n")
+  print("You will soon become THE POTATO, do you accept your fate?\n")
   time.sleep(1)
   fate_accepted = pyip.inputYesNo('Type a yes or no answer and hit enter to accept your fate\n:')
   if fate_accepted == "no":
@@ -44,7 +45,7 @@ def enterPotatoSetup():
   global player
   if not os.path.exists("GameSaveFile.txt"):
       with open("GameSaveFile.txt", "w") as f:
-          f.write("0\n10\n5\n5\n1\n0\n0\n" + battleSet + "\n")
+          f.write("0\n10\n5\n2\n1\n0\n0\n" + battleSet)
   print("This information will be useful later\nThank you for your contributions")
   time.sleep(2)
   print("\nE N T E R P O T A T O\n")
@@ -83,7 +84,7 @@ def getStats():
 
 def battlePRACTICE(battleSet):
   """SETS STATS FOR ENEMY: Weak potato)"""
-  global enemyStats
+  background('pearto-bounce.gif')
   enemyStats = {"name": "Weak Potato",
                 "desc": "Really Weak",
                 "health": 10,
@@ -97,11 +98,51 @@ def battlePRACTICE(battleSet):
   print("Weak potato appears to test your skill")
   print("Get ready!\n")
   print("Press 'Enter' to continue\n")
-  background('whocanitbenow.gif')
   pyip.inputNum(blank = True)
   time.sleep(2.5)
   battleCheckLoop(enemyStats, player, battleSet)
-  background('cat-dance.gif')
+
+def battleLV1MAFIA(battleSet):
+  """SETS STATS FOR ENEMY: LV. 1 Mafia Goon)"""
+  names = ["Antonio", "Vito", "Salvatore", "Luca", "Giovanni", "Francesco", "Marco", "Paolo"]
+  random.shuffle(names)
+  name = random.choice(names)
+  enemyStats = {"name": name,
+                "desc": "Low level street thug working for the mafia",
+                "health": 15,
+                "attack": 7,
+                "damage": 3,
+                "accuracy": 3,
+                "defense": 4,
+                "speed": 3}
+  """INTRO TEXT"""
+  print("You have made big mistake messing with mafia - {}\n".format(name))
+  print("Now you die for your crimes! - {}\n".format(name))
+  print("Press 'Enter' to continue\n")
+  pyip.inputNum(blank = True)
+  time.sleep(2.5)
+  battleCheckLoop(enemyStats, player, battleSet)
+
+def battleMAFIALOSE(battleSet):
+  """You fought the mafia, now you lose"""
+  names = ["Antonio", "Vito", "Salvatore", "Luca", "Giovanni", "Francesco", "Marco", "Paolo"]
+  random.shuffle(names)
+  name = random.choice(names)
+  enemyStats = {"name": name,
+                "desc": "Low level street thug working for the mafia, (armed with deadly weapons)",
+                "health": 999,
+                "attack": 999,
+                "damage": 999,
+                "accuracy": 0,
+                "defense": 0,
+                "speed": 999}
+  """INTRO TEXT"""
+  print("You have made big mistake messing with mafia - {}\n".format(name))
+  print("Now you die for your crimes! - {}\n".format(name))
+  print("Press 'Enter' to continue\n")
+  pyip.inputNum(blank = True)
+  time.sleep(2.5)
+  battleCheckLoop(enemyStats, player, battleSet)
 
 def battleOld(battleSet):
   """SETS STATS FOR ENEMY: Old Potato)"""
@@ -120,6 +161,7 @@ def battleOld(battleSet):
   pyip.inputNum(blank = True)
   time.sleep(2.5)
   battleCheckLoop(enemyStats, player, battleSet)
+  playAudio("Arstotzka")
 
 def battleRich(battleSet):
   """SETS STATS FOR ENEMY: Rich man)"""
@@ -394,7 +436,7 @@ def battleDefend(enemyStats, player):
 def battleMenu(enemyStats, player, battleSet):
   """BATTLE MENU"""
   print("What would you like to do?\n")
-  menuAns = pyip.inputMenu(["Attack", "Defend", "Check"], numbered=True)
+  menuAns = pyip.inputMenu(["Attack - Deals Damage", "Defend - 1/2s Enemy Damage", "Check - Shows Enemy Stats (Does Not Use Turn)"], numbered=True)
   if menuAns == "Attack":
     battleAttack(enemyStats, player, battleSet)
     if enemyStats.get("health") > 0:
@@ -855,7 +897,9 @@ def lostWoods():
       time.sleep(1)
       print("A very scary bird appears and attacks you!\n")
       time.sleep(1)
+      playAudio("Bird")
       battleBirb(battleSet)
+      playAudio("Torn-Apart")
       time.sleep(1)
       print("After defeating the bird, you turn around and go back to the area previous\n")
       time.sleep(3)
@@ -887,8 +931,16 @@ audio_files = {
     "Nube-Negra": ("Nube-Negra.mp3", True),
     "Ardor": ("Soundscape-to-Ardor.mp3", True),
     "Torn-Apart": ("Torn-Apart.mp3", True),
-    "Victory-Road": ("VictoryRoad.mp3", True),
+    "ErmalThaqui97": ("VictoryRoad.mp3", True),
     "MagusPotato": ("Johnathan.mp3", True),
+    "Littleroot": ("Littleroot.mp3", True),
+    "Butou": ("Butou.mp3", True),
+    "Western": ("Western.mp3", True),
+    "Forest": ("Carefree-Time.mp3", True),
+    "Desert-Potato": ("Desert-Potato.mp3", True),
+    "Mountain": ("Mountain.mp3", True),
+    "Bird": ("Bird.mp3", True),
+    "Swarm-Bird": ("Bird-Swarm.mp3", True),
     "Save": ("CharmlessMan.mp3", False)
 }
 
@@ -1029,8 +1081,9 @@ server_thread = threading.Thread(target=start_server)
 server_thread.daemon = True
 server_thread.start()
 
+background('yakuza-goro.gif')
 time.sleep(2)
-webbrowser.open('http://localhost:5000')
+webbrowser.open('http://localhost:5000', "new = 1")
 
 ##################################################################################
 
@@ -1085,10 +1138,10 @@ def savePointZero():
     player["health"] = 10
   time.sleep(2)
   print("Now that you know the basics, we can officially start the game!\n")
-  stopAudio()
   time.sleep(1)
   print("<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>\n")
   time.sleep(1)
+  stopAudio()
   doSave = pyip.inputYesNo("Do you want to save?\n")
   if doSave == "yes":
     save(savePoint)
@@ -1099,7 +1152,9 @@ def savePointZero():
     savePointOne()
 
 def savePointOne():
-  playAudio('PeggleMarch')
+  playAudio('Forest')
+  background('wise-tree.gif')
+  os.system('clear')
   print("You wake up in the middle of a forest, you have no idea how you got there.\n")
   time.sleep(1)
   print("But you know that you have one goal, to outcrime the infamous mashed potato mafia\n")
@@ -1129,8 +1184,10 @@ def savePointOne():
       quit()
     print("You decide to enter Potatoland, good choice\n")
     time.sleep(1)
+    playAudio('Littleroot')
     print("You have now officially entered Potatoland.\n")
     time.sleep(1)
+    background("old-man.gif")
     print("While walking around Potatoland, you see a sickly old potato lying on the side of the road asking for medicine\n")
     time.sleep(1)
     prompt = pyip.inputMenu(["KILL", "Ignore"], numbered = True)
@@ -1138,12 +1195,12 @@ def savePointOne():
       time.sleep(1)
       print("You are trying to outcrime the Mafia, not be a good person\n")
       time.sleep(0.5)
-      print("You get shot in the back by a Mafia Goon and die\n")
-      time.sleep(0.5)
       print("'You shouldn't have messed with our target' - Mafia Goon\n")
       time.sleep(0.5)
-      print("DEATH - You've been 'mashed'\n")
+      battleMAFIALOSE(battleSet)
+      print("how.")
       time.sleep(2)
+      print("why.")
       quit()
     elif prompt == "KILL":
       battleOld(battleSet)
@@ -1166,9 +1223,10 @@ def savePointOne():
       time.sleep(0.5)
       print('"You die now" - Mafia Goon\n')
       time.sleep(0.5)
-      print("You get violently stabbed by the Mafia Goon and die\n")
-      time.sleep(0.5)
-      print("DEATH - You've been 'peeled'\n")
+      battleMAFIALOSE(battleSet)
+      print("how.")
+      time.sleep(2)
+      print("why.")
       quit()
     elif prompt == "Dont ask Mafia Goon":
       time.sleep(1)
@@ -1219,7 +1277,7 @@ def savePointOne():
       time.sleep(0.5)
       if player["health"] <= 6:
         print("After fighting such a tough enemy, you feel completely exhausted and are very beat up\n")
-      elif player["health"] == 8 or player["health"] == 9 or player["health"] == 7:
+      elif player["health"] <= 9 and player["health"] > 6:
         print("After fighting such a tough enemy, you feel a quite tired\n")
       elif player["health"] == 10:
        print("After taking down such a tough enemy so effortlessly, you feel powerful\n")
@@ -1256,6 +1314,7 @@ def savePointOne():
         time.sleep(0.5)
         print("You decide that you are just betterer and do not need to heal, your wounds stay fresh\n")
       time.sleep(1)
+      stopAudio()
       doSave = pyip.inputYesNo("Do you want to save?\n")
       if doSave == "yes":
         save(savePoint)
@@ -1341,6 +1400,7 @@ def savePointTwo():
   print("You turn off the goggles and suddenly the field turns back into a barren desert\n")
   time.sleep(0.5)
   print("Suddenly, you hear a loud noise from above you\n")
+  playAudio('Desert-Potato')
   time.sleep(1)
   print("Its a desert potato, and it looks very mean\n")
   time.sleep(1)
@@ -1361,6 +1421,7 @@ def savePointTwo():
   battleDesertPotato(battleSet)
   player["money"] += 10
   player["crimes"] += 1
+  playAudio("Nube-Negra")
   time.sleep(1)
   print("You have now defeated the attacking desert potato\n")
   time.sleep(1)
@@ -1456,6 +1517,7 @@ def savePointTwo():
   time.sleep(2.5)
   print("You feel hydrated\n")
   time.sleep(1)
+  stopAudio()
   doSave = pyip.inputYesNo("Do you want to save?\n")
   if doSave == "yes":
     save(savePoint)
@@ -1540,6 +1602,7 @@ def savePointThree():
   time.sleep(1)
   print("You take one last drink from the fountain and then leave\n")
   time.sleep(1)
+  stopAudio()
   doSave = pyip.inputYesNo("Do you want to save?\n")
   if doSave == "yes":
     save(savePoint)
@@ -1559,11 +1622,13 @@ def savePointFour():
   time.sleep(1.5)
   prompt = pyip.inputMenu(["Trust Tunnel", "Climb Mountain"], numbered = True)
   if prompt == "Trust Tunnel":
+    playAudio("Ardor")
     print("You trust the tunnel and travel through the mountain\n") 
-    time.sleep(4)
+    time.sleep(5)
   elif prompt == "Climb Mountain":
     print("You decide to not trust the EXTREMELY INVITING tunnel for some reason\n")
     time.sleep(1)
+    playAudio("Mountain")
     print("This will take a while, but you wanted this\n")
     time.sleep(30)
   print("After passing the mountain range, you are now located at the edge of a gargantuan basin completely filled with water\n")
@@ -1572,6 +1637,7 @@ def savePointFour():
   time.sleep(1.5)
   print("Near you, you see a small rowboat\n")
   prompt = pyip.inputYesNo("Take the boat to the suspicious island?\n")
+  playAudio("Unwavering-Heart")
   if prompt == "yes":
     time.sleep(1)
     print("You decide to get in the boat and row to the island\n")
@@ -1581,6 +1647,7 @@ def savePointFour():
     print("You walk up to the house and see that the door is wide open\n")
     prompt = pyip.inputYesNo("Enter the house?\n")
     if prompt == "yes":
+      playAudio("Butou")
       time.sleep(1.5)
       print("You walk into the house\n")
       time.sleep(1.5)
@@ -1599,12 +1666,14 @@ def savePointFour():
           time.sleep(1.5)
           print("Suddenly, you hear a voice coming from around the corner!\n")
           time.sleep(1.5)
+          playAudio("MagusPotato")
           print('"You should not have come here!" - MagusPotato (Whispers into your ear magically)\n')
           time.sleep(1.5)
           print('"This was a trap" - MagusPotato (Still whispers into your ear magically)\n')
           time.sleep(1.5)
           print("You walk around the corner and see:\n")
           time.sleep(3.5)
+          playAudio("Interplanetary-Spark")
           print("A three pound box of bees!\n")
           time.sleep(1)
           print("Wow shocking\n")
@@ -1625,6 +1694,7 @@ def savePointFour():
           if prompt == "yes":
             print("You open the chest\n")
             time.sleep(1.5)
+            playAudio("ErmalThaqui97")
             print("Inside, you find Ermal Thaqui 97\n")
             time.sleep(1.5)
             print('"You should download Surfnet VPN" - Ermal Thaqui 97\n')
@@ -1638,6 +1708,7 @@ def savePointFour():
             print("You have now defeated Ermal Thaqui 97\n")
             time.sleep(1.5)
             print("The exit reappears and you leave the house and get back in the boat\n")
+            playAudio("Unwavering-Heart")
             time.sleep(3)
             print("After you reach the other side of the lake, you tie the boat to a dock on the shore\n")
             time.sleep(1.5)
@@ -1647,6 +1718,7 @@ def savePointFour():
             time.sleep(4.5)
             print("You have now reached the entrance of the swamp\n")
             time.sleep(1.5)
+            stopAudio()
             doSave = pyip.inputYesNo("Do you want to save?\n")
             if doSave == "yes":
               save(savePoint)
@@ -1710,6 +1782,7 @@ def savePointFour():
     time.sleep(4.5)
     print("You have now reached the entrance of the swamp\n")
     time.sleep(1.5)
+    stopAudio()
     doSave = pyip.inputYesNo("Do you want to save?\n")
     if doSave == "yes":
       save(savePoint)
@@ -1724,6 +1797,7 @@ def savePointFive():
   print("You see a sign that says 'Welcome to the SWAMP OF NIGHTMARES'\n")
   time.sleep(1.5)
   print("*You begin to feel spooky*\n")
+  playAudio("Torn-Apart")
   time.sleep(2)
   print("For the first time so far, you do not sense any immediate danger\n")
   time.sleep(1.5)
@@ -1759,7 +1833,9 @@ def savePointFive():
   time.sleep(1.5)
   print("A huge swarm of birds drops down from above in front of you\n")
   time.sleep(1.5)
+  playAudio("SwarmBird")
   battleSwarmBirb(battleSet)
+  playAudio("Torn-Apart")
   time.sleep(2)
   print("*You no longer feel spooky*\n")
   time.sleep(1.5)
@@ -1767,6 +1843,7 @@ def savePointFive():
   time.sleep(1.5)
   print("You walk out of the swamp\n")
   time.sleep(1.5)
+  stopAudio()
   doSave = pyip.inputYesNo("Do you want to save?\n")
   if doSave == "yes":
     save(savePoint)
@@ -1784,9 +1861,11 @@ def savePointSeven():
   time.sleep(1.5)
   print("The full version will be released in like 300-500 business days\n")
   time.sleep(1.5)
+  stopAudio()
   endcredits()
 
 def endcredits():
+  playAudio("Butou")
   print("Thank You For Playing ENTER POTATO\n")
   time.sleep(2.5)
   print("Credits:\n")
