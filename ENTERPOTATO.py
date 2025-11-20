@@ -436,7 +436,7 @@ def battleDefend(enemyStats, player):
 def battleMenu(enemyStats, player, battleSet):
   """BATTLE MENU"""
   print("What would you like to do?\n")
-  menuAns = pyip.inputMenu(["Attack - Deals Damage", "Defend - 1/2s Enemy Damage", "Check - Shows Enemy Stats (Does Not Use Turn)"], numbered=True)
+  menuAns = pyip.inputMenu(["Attack", "Defend", "Check", "Help"], numbered=True)
   if menuAns == "Attack":
     battleAttack(enemyStats, player, battleSet)
     if enemyStats.get("health") > 0:
@@ -456,7 +456,10 @@ def battleMenu(enemyStats, player, battleSet):
     print("Speed: {}\n".format(str(enemyStats.get("speed"))))
     time.sleep(5)
     battleMenu(enemyStats, player, battleSet)
-
+  elif menuAns == "Help":
+    print("Attack - Deals Damage\n", "Defend - 1/2s Enemy Damage\n", "Check - Shows Enemy Stats (Does Not Use Turn)\n")
+    battleMenu(enemyStats, player, battleSet)
+  
 def battleWin():
   print("You won! Good job!\n")
 
@@ -980,7 +983,6 @@ def index():
                     document.getElementById('gif').src = '/bg/' + currentGif;
                 }
             }
-            
             function updateAudio() {
                 const audioPlayer = document.getElementById('audioPlayer');
                 if (currentAudio) {
