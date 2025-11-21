@@ -135,9 +135,10 @@ def battleMAFIALOSE(battleSet):
                 "damage": 999,
                 "accuracy": 0,
                 "defense": 0,
-                "speed": 999}
+                "speed": 999} 
   """INTRO TEXT"""
-  print("You have made big mistake messing with mafia - {}\n".format(name))
+  print("My name is {}".format(name))
+  print("And you have made big mistake messing with mafia - {}\n".format(name))
   print("Now you die for your crimes! - {}\n".format(name))
   print("Press 'Enter' to continue\n")
   pyip.inputNum(blank = True)
@@ -360,7 +361,7 @@ def battleAttack(enemyStats, player, battleSet):
         if critA == critB:
           amountRight += player.get("attack")
           print("CRITICAL HIT!\n")
-          background('critical-hit.gif')
+          background('v1-ballin.gif')
           time.sleep(0.25)
           revert_gif()
         else:
