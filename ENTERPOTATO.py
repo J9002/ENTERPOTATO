@@ -102,49 +102,6 @@ def battlePRACTICE(battleSet):
   time.sleep(2.5)
   battleCheckLoop(enemyStats, player, battleSet)
 
-def battleLV1MAFIA(battleSet):
-  """SETS STATS FOR ENEMY: LV. 1 Mafia Goon)"""
-  names = ["Antonio", "Vito", "Salvatore", "Luca", "Giovanni", "Francesco", "Marco", "Paolo"]
-  random.shuffle(names)
-  name = random.choice(names)
-  enemyStats = {"name": name,
-                "desc": "Low level street thug working for the mafia",
-                "health": 15,
-                "attack": 7,
-                "damage": 3,
-                "accuracy": 3,
-                "defense": 4,
-                "speed": 3}
-  """INTRO TEXT"""
-  print("You have made big mistake messing with mafia - {}\n".format(name))
-  print("Now you die for your crimes! - {}\n".format(name))
-  print("Press 'Enter' to continue\n")
-  pyip.inputNum(blank = True)
-  time.sleep(2.5)
-  battleCheckLoop(enemyStats, player, battleSet)
-
-def battleMAFIALOSE(battleSet):
-  """You fought the mafia, now you lose"""
-  names = ["Antonio", "Vito", "Salvatore", "Luca", "Giovanni", "Francesco", "Marco", "Paolo"]
-  random.shuffle(names)
-  name = random.choice(names)
-  enemyStats = {"name": name,
-                "desc": "Low level street thug working for the mafia, (armed with deadly weapons)",
-                "health": 999,
-                "attack": 999,
-                "damage": 999,
-                "accuracy": 0,
-                "defense": 0,
-                "speed": 999} 
-  """INTRO TEXT"""
-  print("My name is {}".format(name))
-  print("And you have made big mistake messing with mafia - {}\n".format(name))
-  print("Now you die for your crimes! - {}\n".format(name))
-  print("Press 'Enter' to continue\n")
-  pyip.inputNum(blank = True)
-  time.sleep(2.5)
-  battleCheckLoop(enemyStats, player, battleSet)
-
 def battleOld(battleSet):
   """SETS STATS FOR ENEMY: Old Potato)"""
   enemyStats = {"name": "Sickly Old Potato",
@@ -156,12 +113,14 @@ def battleOld(battleSet):
                 "defense": 5,
                 "speed": 0}
   """INTRO TEXT"""
+  playAudio("OldMan")
   print("Old potato appears!\n")
   print('"Prepare to lose sonny boy!"\n')
   print("Press 'Enter' to continue\n")
   pyip.inputNum(blank = True)
   time.sleep(2.5)
   battleCheckLoop(enemyStats, player, battleSet)
+  background('old-man.gif')
   playAudio("Arstotzka")
 
 def battleRich(battleSet):
@@ -177,12 +136,14 @@ def battleRich(battleSet):
   """INTRO TEXT"""
   print("Wealthy Man Is Preparing To Attack You!\n")
   print('"Im not going down without a fight!"\n')
-  print('"Prepare to Die for your crimes! - Wealthy Man\n"')
+  print('"Prepare to Die for your crimes! - Wealthy Man"\n')
   print("You sense that this is going to be a tough battle, must be a *BOSS ENEMY* be careful\n")
   print("Press 'Enter' to continue\n")
   pyip.inputNum(blank = True)
   time.sleep(2.5)
+  playAudio("RichMan")
   battleCheckLoop(enemyStats, player, battleSet)
+  playAudio('Arstotzka')
 
 def battleDesertPotato(battleSet):
   """SETS STATS FOR ENEMY: Desert Potato)"""
@@ -195,6 +156,7 @@ def battleDesertPotato(battleSet):
                 "defense": 3,
                 "speed": 3.5}
   """INTRO TEXT"""
+  playAudio("Desert-Potato")
   print("Desert Potato Hates Rulebreakers Like You!\n")
   print('"You should always follow the rules!"\n')
   print('"Prepare to Die!" - Desert Potato\n')
@@ -214,6 +176,7 @@ def battleDessertPotato(battleSet):
                 "defense": 2,
                 "speed": 1.5}
   """INTRO TEXT"""
+  playAudio("DessertPotato")
   print("Dessert Potato Is A Crime Against Nature!\n")
   print('"I am a sweet potato"\n')
   print('"You should be frightened!" - Dessert Potato\n')
@@ -221,6 +184,7 @@ def battleDessertPotato(battleSet):
   pyip.inputNum(blank = True)
   time.sleep(2.5)
   battleCheckLoop(enemyStats, player, battleSet)
+  playAudio("Nube-Negra")
 
 def battleKatTut(battleSet):
   """SETS STATS FOR ENEMY: Kat Tut)"""
@@ -361,9 +325,7 @@ def battleAttack(enemyStats, player, battleSet):
         if critA == critB:
           amountRight += player.get("attack")
           print("CRITICAL HIT!\n")
-          background('v1-ballin.gif')
           time.sleep(0.25)
-          revert_gif()
         else:
           amountRight += 1
     else:
@@ -807,9 +769,7 @@ def katTutEvent():
       katTutComedyOld.append(sayJoke)
       katTutComedyNew.remove(sayJoke)
       print('"{}" - Kat Tut\n'.format(sayJoke))
-      background('puekeko.gif')
       time.sleep(1.5)
-      background('kat-tut.gif')
     except IndexError:
       print("Either I messed up somehow or you are so bad at trivia that you have run out of questions\n")
       time.sleep(2)
@@ -867,19 +827,19 @@ def lostWoods():
     whatDirectionStr = ""
     whatDirection = pyip.inputMenu(["Go forwards", "Go left", "Go right"], numbered = True, prompt = "In what direction will you move?\n")
     if whatDirection == "Go forwards":
-      if x > 0 and directionsWent[x-1] == whatDirection:
+      if directionsWent and directionsWent[-1] == whatDirection:
         print("(Why would you go the same direction if you already know it is wrong?)\n")
         time.sleep(1)
       directionsWent.append(whatDirection)
       whatDirectionStr = "f"
     elif whatDirection == "Go left":
-      if x > 0 and directionsWent[x-1] == whatDirection:
+      if directionsWent and directionsWent[-1] == whatDirection:
         print("(Why would you go the same direction if you already know it is wrong?)\n")
         time.sleep(1)
       directionsWent.append(whatDirection)
       whatDirectionStr = "l"
     elif whatDirection == "Go right":
-      if x > 0 and directionsWent[x-1] == whatDirection:
+      if directionsWent and directionsWent[-1] == whatDirection:
         print("(Why would you go the same direction if you already know it is wrong?)\n")
         time.sleep(1)
       directionsWent.append(whatDirection)
@@ -945,6 +905,10 @@ audio_files = {
     "Mountain": ("Mountain.mp3", True),
     "Bird": ("Bird.mp3", True),
     "Swarm-Bird": ("Bird-Swarm.mp3", True),
+    "OldMan": ("One-Winged-Angel.mp3", True),
+    "RichMan": ("RichMan.mp3", True),
+    "DessertPotato": ("APOCALYPSIS-AQUARIUS.mp3", True),
+    "DesertTown": ("DesertTown.mp3", True),
     "Save": ("CharmlessMan.mp3", False)
 }
 
@@ -1190,7 +1154,7 @@ def savePointOne():
     playAudio('Littleroot')
     print("You have now officially entered Potatoland.\n")
     time.sleep(1)
-    background("old-man.gif")
+    background("old-man-ok.gif")
     print("While walking around Potatoland, you see a sickly old potato lying on the side of the road asking for medicine\n")
     time.sleep(1)
     prompt = pyip.inputMenu(["KILL", "Ignore"], numbered = True)
@@ -1198,13 +1162,7 @@ def savePointOne():
       time.sleep(1)
       print("You are trying to outcrime the Mafia, not be a good person\n")
       time.sleep(0.5)
-      print("'You shouldn't have messed with our target' - Mafia Goon\n")
-      time.sleep(0.5)
-      battleMAFIALOSE(battleSet)
-      print("how.")
-      time.sleep(2)
-      print("why.")
-      quit()
+      battleOld(battleSet)
     elif prompt == "KILL":
       battleOld(battleSet)
     player["crimes"] += 1
@@ -1216,74 +1174,54 @@ def savePointOne():
     time.sleep(1)
     print("You wonder why there are so many in such a small village in the middle of a forest\n")
     time.sleep(1)
+    print("You decide that you should go to the local shop to buy some supplies\n")
+    time.sleep(2)
+    print("But then you remember that you have no money\n")
+    time.sleep(1)
+    print("You see a rich looking man walking towards a bank holding a bag of money\n")
+    time.sleep(0.5)
     print("What do you do?\n")
-    prompt = pyip.inputMenu(["Dont ask Mafia Goon", "Ask Mafia Goon"], numbered = True)
-    if prompt == "Ask Mafia Goon":
+    prompt = pyip.inputMenu(["Rob Man", "Dont Rob"], numbered = True)
+    if prompt == "Dont Rob":
+      print("Really? You're going to let a rich man walk away with his money?\n")
       time.sleep(1)
-      print("You walk up to a mafia goon and ask him why there are so many mafia goons\n")
-      time.sleep(1)
-      print('"Why do you interfere in the affairs of the mafia?" - Mafia Goon\n')
+      print("I think not!\n")
       time.sleep(0.5)
-      print('"You die now" - Mafia Goon\n')
-      time.sleep(0.5)
-      battleMAFIALOSE(battleSet)
-      print("how.")
-      time.sleep(2)
-      print("why.")
-      quit()
-    elif prompt == "Dont ask Mafia Goon":
+      print("You will rob him.\n")
       time.sleep(1)
-      print("You decide to not ask the mafia goon\n")
-      print("Probably a good idea to not mess with the Mashed Potato Mafia quite yet\n")
+      print("You walk up to the man and silently motion to him to give you the bag of money\n")
       time.sleep(1)
-      print("You decide that you should go to the local shop to buy some supplies\n")
-      time.sleep(2)
-      print("But then you remember that you have no money\n")
+      print('"You cannot rob me!"\n')
+      print('"I am too rich for you!" - Rich Man\n')
       time.sleep(1)
-      print("You see a rich looking man walking towards a bank holding a bag of money\n")
-      time.sleep(0.5)
-      print("What do you do?\n")
-      prompt = pyip.inputMenu(["Rob Man", "Dont Rob"], numbered = True)
-      if prompt == "Dont Rob":
-        print("Really? You're going to let a rich man walk away with his money?\n")
-        time.sleep(1)
-        print("I think not!\n")
+      print("Use force?\n")
+      prompt = pyip.inputMenu(["Yes", "YES!"], numbered = True)
+      if prompt == "Yes":
         time.sleep(0.5)
-        print("You will rob him.\n")
-        time.sleep(1)
-        print("You walk up to the man and silently motion to him to give you the bag of money\n")
-        time.sleep(1)
-        print('"You cannot rob me!"\n')
-        print('"I am too rich for you!" - Rich Man\n')
-        time.sleep(1)
-        print("Use force?\n")
-        prompt = pyip.inputMenu(["Yes", "YES!"], numbered = True)
-        if prompt == "Yes":
-          time.sleep(0.5)
-          battleRich(battleSet)
-        elif prompt == "YES!":
-          time.sleep(0.5)    
-          battleRich(battleSet)
-      elif prompt == "Rob Man":
-        print("Good, you're learning\n")
-        time.sleep(1)
-        print("You walk up to the man and silently motion to him to give you the bag of money\n")
-        time.sleep(1)
-        print('"You cannot rob me!"\n')
-        print('"I am too rich for you!" - Rich Man\n')
         battleRich(battleSet)
-      player["money"] += 500
-      player["crimes"] += 1
-      print("You have now robbed the rich man of his money!\n")
-      time.sleep(0.5)
-      print("Good job! You gained $500\n")
-      time.sleep(0.5)
-      if player["health"] <= 6:
-        print("After fighting such a tough enemy, you feel completely exhausted and are very beat up\n")
-      elif player["health"] <= 9 and player["health"] > 6:
-        print("After fighting such a tough enemy, you feel a quite tired\n")
-      elif player["health"] == 10:
-       print("After taking down such a tough enemy so effortlessly, you feel powerful\n")
+      elif prompt == "YES!":
+        time.sleep(0.5)    
+        battleRich(battleSet)
+    elif prompt == "Rob Man":
+      print("Good, you're learning\n")
+      time.sleep(1)
+      print("You walk up to the man and silently motion to him to give you the bag of money\n")
+      time.sleep(1)
+      print('"You cannot rob me!"\n')
+      print('"I am too rich for you!" - Rich Man\n')
+      battleRich(battleSet)
+    player["money"] += 500
+    player["crimes"] += 1
+    print("You have now robbed the rich man of his money!\n")
+    time.sleep(0.5)
+    print("Good job! You gained $500\n")
+    time.sleep(0.5)
+    if player["health"] <= 6:
+      print("After fighting such a tough enemy, you feel completely exhausted and are very beat up\n")
+    elif player["health"] <= 9 and player["health"] > 6:
+      print("After fighting such a tough enemy, you feel a quite tired\n")
+    elif player["health"] == 10:
+      print("After taking down such a tough enemy so effortlessly, you feel powerful\n")
       time.sleep(1)
       print("You walk around Potatoland and notice a nice looking hotel\n")
       time.sleep(1)
@@ -1339,11 +1277,12 @@ def savePointTwo():
   time.sleep(1)
   print("While you are turned around, you suddenly you hear a voice coming from behind you\n")
   time.sleep(1)
+  background("Magus.gif")
+  playAudio('MagusPotato')
   print("The speaker is a cloaked figure wearing a bright red cape and large leather gloves\n")
   time.sleep(1)
   print("The man also appears to be holding a bright silver scythe\n")
   time.sleep(1)
-  playAudio('MagusPotato')
   print('"I, am MagusPotato, I wander these deserts looking for those who have crossed the line" - MagusPotato\n')
   time.sleep(1)
   print("You ask him what line he is talking about\n")
@@ -1396,6 +1335,7 @@ def savePointTwo():
   print('"Follow this path to the end of the desert, you will be safe as long as you keep the goggles activated and stay on the path" - MagusPotato\n')
   time.sleep(1)
   print("Before you can thank MagusPotato, he says 'It seems that my work here is done' and suddenly vanishes, leaving you alone in the field\n")
+  revert_gif()
   playAudio('Nube-Negra')
   time.sleep(1)
   print("After walking down the path for a few miles, you wonder what happens when you turn off the goggles\n")
@@ -1403,7 +1343,6 @@ def savePointTwo():
   print("You turn off the goggles and suddenly the field turns back into a barren desert\n")
   time.sleep(0.5)
   print("Suddenly, you hear a loud noise from above you\n")
-  playAudio('Desert-Potato')
   time.sleep(1)
   print("Its a desert potato, and it looks very mean\n")
   time.sleep(1)
@@ -1617,6 +1556,7 @@ def savePointThree():
   time.sleep(2.5)
 
 def savePointFour():
+  playAudio("Nube-Negra")
   print("After leaving the OASIS, you continue walking down the path\n")
   time.sleep(2)
   print("You eventually reach the end of the desert and see a huge mountain blocking your path\n")
@@ -1669,10 +1609,12 @@ def savePointFour():
           time.sleep(1.5)
           print("Suddenly, you hear a voice coming from around the corner!\n")
           time.sleep(1.5)
+          background("Magus.gif")
           playAudio("MagusPotato")
           print('"You should not have come here!" - MagusPotato (Whispers into your ear magically)\n')
           time.sleep(1.5)
           print('"This was a trap" - MagusPotato (Still whispers into your ear magically)\n')
+          revert_gif()
           time.sleep(1.5)
           print("You walk around the corner and see:\n")
           time.sleep(3.5)
