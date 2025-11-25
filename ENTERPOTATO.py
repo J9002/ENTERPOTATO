@@ -11,6 +11,7 @@ import logging
 def enterPotatoSetup():
   """INTRO SEQUENCE"""
   global battleSet
+  global player
   playAudio("PeggleSynth")
   background("reigen-computer.gif")
   print("Welcome to ENTER POTATO,\n")
@@ -42,7 +43,6 @@ def enterPotatoSetup():
     battleSet = 'abcdefghijklmnopqrstuvwxyz'
   else:
     battleSet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-  global player
   if not os.path.exists("GameSaveFile.txt"):
       with open("GameSaveFile.txt", "w") as f:
           f.write("0\n10\n5\n2\n1\n0\n0\n" + battleSet)
@@ -197,6 +197,8 @@ def battleKatTut(battleSet):
                 "defense": 1,
                 "speed": 5}
   """INTRO TEXT"""
+  playAudio("Kat-Tut-Fight")
+  background("kat-tut-fight.gif")
   print("Kat Tut Is Unbelievably Powerful! *BOSS ENEMY*\n")
   print('"I am the best Peggle master"\n')
   print('"Prepare to lose!" - Kat Tut\n')
@@ -204,6 +206,7 @@ def battleKatTut(battleSet):
   pyip.inputNum(blank = True)
   time.sleep(2.5)
   battleCheckLoop(enemyStats, player, battleSet)
+  revert_gif()
 
 def battleBirb(battleSet):
   """SETS STATS FOR ENEMY: Birb)"""
@@ -371,7 +374,7 @@ def enemyAttack(enemyStats, player, battleSet):
 
 def battleDefend(enemyStats, player):
   """DEFEND FROM ATTACK"""
-  print("Defend from {}'s attack! DO NOT MESS UP!\n".format(enemyStats.get("name")))
+  print("Defend from {}'s attack. DO NOT MESS UP!\n".format(enemyStats.get("name")))
   time.sleep(1.5)
   amountWrong = 0
   amountRight = 0
@@ -388,12 +391,19 @@ def battleDefend(enemyStats, player):
     else:
       amountWrong += 1
     os.system('clear')
-  if amountWrong <= enemyStats.get("accuracy"):
-    print("You blocked\n")
+  if amountWrong == 0:
+    print("Full block\n")
+    print("You took no damage\n")
+    print("You have {} health remaining\n".format(str(player.get("health"))))
+  elif amountWrong <= enemyStats.get("accuracy") and amountWrong > 0:
+    print("Partial block \n")
+    player["health"] -= round(enemyStats.get("damage")*0.5)
+    print("You took {} damage\n".format(str(round(enemyStats.get("damage")*0.5))))
+    print("You have {} health remaining\n".format(str(player.get("health"))))
   else:
     print("Failed block :(\n")
-    player["health"] -= enemyStats.get("damage")*0.5
-    print("You took {} damage\n".format(str(enemyStats.get("damage")*0.5)))
+    player["health"] -= enemyStats.get("damage")
+    print("You took {} damage\n".format(str(enemyStats.get("damage"))))
     print("You have {} health remaining\n".format(str(player.get("health"))))
 
 def battleMenu(enemyStats, player, battleSet):
@@ -620,7 +630,7 @@ def sillyGame():
           else:
             youHand.append(enemyPlay)
             enemyHand.remove(enemyPlay)
-            time.sleep(0.05)
+            time.sleep(0.12)
             print("You won a {0}\n".format(enemyPlay))
         elif yourPlay < enemyPlay:
           if enemyPlay == 13:
@@ -633,7 +643,7 @@ def sillyGame():
           else:
             enemyHand.append(yourPlay)
             youHand.remove(yourPlay)
-            time.sleep(0.05)
+            time.sleep(0.12)
             print("You lost a {0}\n".format(enemyPlay))
         else:
           if yourPlay == enemyPlay:
@@ -700,7 +710,8 @@ def getRichQuick():
 
   """Kat Tut Comedy And Trivia"""
 def katTutEvent():
-  katTutComedyNew = ["You're telling me a shrimp fried this rice?", "Road work ahead, uh yeah, I sure hope it does", "Bird flu, yeah, they tend to do that", "Apartment complex? I find it quite simple really", "If wood fired Pizza? How is Pizza supposed to get a job now?", "What's up stairs? They can't talk", "Chef's kiss? Do they really?", "You're telling me a gar licked this bread?", "Blood drive? It has a license?", "Your all right? I thought you're all LEFT", "Did you know that a frog can jump higher that the Eiffel tower? This is because Eiffel tower cannot jump.", "Re:Fridgerator? I heard about the vending machine isekai but this is getting ridiculous", "Shoes smell? They don't have noses", "Why can't dinosaurs clap their hands? Because they are extinct", "Slippery when wet? I'd be shocked if it wasn't", "Paper jam? Sounds awful, why would you make that?", "Fire exit? Then where am I supposed to leave?", "", "", ""]
+  global player
+  katTutComedyNew = ["You're telling me a shrimp fried this rice?", "Road work ahead, uh yeah, I sure hope it does", "Bird flu, yeah, they tend to do that", "Apartment complex? I find it quite simple really", "If wood fired Pizza? How is Pizza supposed to get a job now?", "What's up stairs? They can't talk", "Chef's kiss? Do they really?", "You're telling me a gar licked this bread?", "Blood drive? It has a license?", "Manchester.", "Did you know that a frog can jump higher that the Eiffel tower? This is because Eiffel tower cannot jump.", "Re:Fridgerator? I heard about the vending machine isekai but this is getting ridiculous", "Shoes smell? They don't have noses", "Why can't dinosaurs clap their hands? Because they are extinct", "Slippery when wet? I'd be shocked if it wasn't", "Paper jam? Sounds awful, why would you make that?", "Fire exit? Then where am I supposed to leave?", "Yule log? If you log the door on me I won't be able to get in", "Why was 10 afraid? Because it was between 9 and 11", "40,000 pounds of lard."]
   katTutComedyOld = []
   random.shuffle(katTutComedyNew)
   print("You see Kat Tut on stage in his famous outfit from Peggle Nights\n")
@@ -724,7 +735,7 @@ def katTutEvent():
   questionAns6 = ["From what game does the level officially named: 'The level colloquially known as 4-s' originate?", "Yakuza 0", "Peggle 2", "ULTRAKILL", "Pokemon Red/Blue", "ULTRAKILL"]
   questionAns7 = ["Who is the main antagonist of the game, 'Pajama Sam: No Need To Hide When It's Dark Outside'?", "Literally Just Satan", "Darkness", "Lightness", "EVIL Pajama Sam", "Darkness"]
   questionAns8 = ["What is the first pokemon?", "Bulbasaur", "Rhydon", "Pikachu", "Arceus", "Rhydon"]
-  questionAns9 = ["Who/What is the real-life inspiration for the final boss of ENTER POTATO?", "Kat Tut", "Asher Zost's left toe", "Mr. Francis, high school health teacher", "Doug.", "Mr. Francis, high school health teacher"]
+  questionAns9 = ["Who/What is the real-life inspiration for the final boss of ENTER POTATO?", "Kat Tut", "Asher Zost's left toe (don't ask which one)", "Mr. Francis, high school health teacher", "Doug.", "Mr. Francis, high school health teacher"]
   questionAns10 = ["What is the most hated pokemon by the father of the creator of this game?", "Charjabug", "Pichu", "Wormadam - Trash form", "Golurk", "Charjabug"]
   questionAns11 = ["Who's the captain of the Ginyu force", "Trunks", "Gohan", "Frieza", "Ginyu", "Ginyu"]
   questionAns12 = ["What is the ability of the pokemon Eiscue?", "Ice Face", "Ice Wall", "Ice Spikes", "Fire Body", "Ice Face"]
@@ -899,7 +910,6 @@ audio_files = {
     "MagusPotato": ("Johnathan.mp3", True),
     "Littleroot": ("Littleroot.mp3", True),
     "Butou": ("Butou.mp3", True),
-    "Western": ("Western.mp3", True),
     "Forest": ("Carefree-Time.mp3", True),
     "Desert-Potato": ("Desert-Potato.mp3", True),
     "Mountain": ("Mountain.mp3", True),
@@ -909,6 +919,7 @@ audio_files = {
     "RichMan": ("RichMan.mp3", True),
     "DessertPotato": ("APOCALYPSIS-AQUARIUS.mp3", True),
     "DesertTown": ("DesertTown.mp3", True),
+    "Kat-Tut-Fight": ("Rush-Mode.mp3", True),
     "Save": ("CharmlessMan.mp3", False)
 }
 
@@ -1448,6 +1459,7 @@ def savePointTwo():
   print("The town is pretty small, and all of the buildings are carved from sandstone\n")
   time.sleep(1)
   print("Once you have walked in, you see a sign on the ground near you\n")
+  playAudio("DesertTown")
   time.sleep(0.5)
   print("The sign reads: 'Welcome to the OASIS'")
   time.sleep(1)
@@ -1518,6 +1530,7 @@ def savePointThree():
   print("The doors of the casino open up\n")
   time.sleep(0.5)
   print("You walk through the exit doors of the casino and are now back in the center of the OASIS\n")
+  playAudio("DesertTown")
   time.sleep(1)
   print("As you walk around the town, you see a concert hall near the fountain\n")
   time.sleep(1)
@@ -1536,6 +1549,7 @@ def savePointThree():
   print("You see that the building is full of all the fans of Kat Tut\n")
   time.sleep(1.5)
   katTutEvent()
+  playAudio("DesertTown")
   print("You stay the night at a bench near the performance hall\n")
   time.sleep(5)
   print("You wake up the next morning and see that the sun is as hot as ever\n")
@@ -1812,20 +1826,8 @@ def savePointSeven():
 def endcredits():
   playAudio("Butou")
   print("Thank You For Playing ENTER POTATO\n")
-  time.sleep(2.5)
-  print("Credits:\n")
-  time.sleep(2)
-  print("Maddox Mullen: Programming, Story, Character Lines, Testing, Debugging\n")
   time.sleep(1.5)
-  print("Xavier Diaz: Testing, Story, Character Lines, Being poor, Sitting through the extremely long debugging process that I rigged against him\n")
-  time.sleep(1.5)
-  print("Silas Jones: Testing\n")
-  time.sleep(1.5)
-  print("Asher Zost: Testing, Some Character Lines\n")
-  time.sleep(1.5)
-  print("Leonard Udell: Testing, Some Story\n")
-  time.sleep(1.5)
-  print("Special thanks to Peggle Deluxe for being an epic game, butter, and with the number 3\n")
+  print("Credits.txt")
   time.sleep(5)
   os.system('clear')
   print("I'll take a potato chip...\n")
