@@ -12,8 +12,8 @@ def enterPotatoSetup():
   """INTRO SEQUENCE"""
   global battleSet
   global player
-  playAudio("PeggleSynth")
   background("reigen-computer.gif")
+  playAudio("PeggleSynth")
   print("Welcome to ENTER POTATO,\n")
   time.sleep(0.5)
   print("A game with bad gameplay and even worse writing\n")
